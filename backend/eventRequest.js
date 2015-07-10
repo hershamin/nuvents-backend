@@ -1,6 +1,6 @@
 ﻿// Dependencies
-var Summary = require('../Schema/summary.js')
-var Detail = require('../Schema/detail.js')
+var Summary = require('../Schema/eventSummary.js')
+var Detail = require('../Schema/eventDetail.js')
 
 // Event request to add city
 exports.eventRequest = function (socket, data) {

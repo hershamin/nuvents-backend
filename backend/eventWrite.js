@@ -1,6 +1,6 @@
 ﻿// Dependencies
-var Summary = require('../Schema/summary.js')
-var Detail = require('../Schema/detail.js')
+var Summary = require('../Schema/eventSummary.js')
+var Detail = require('../Schema/eventDetail.js')
 
 // Nearby Events
 exports.addEvent = function (socket, data) {
