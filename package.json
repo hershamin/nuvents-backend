@@ -1,0 +1,17 @@
+{
+  "name": "NuVents_backend",
+  "version": "1.0.0",
+  "description": "NuVents-backend",
+  "main": "server.js",
+  "author": {
+    "name": "Hersh",
+    "email": ""
+  },
+  "dependencies" : {
+      "express" :  "latest",
+      "mongoose" : "latest",
+      "bson" : "latest",
+      "redis" : "latest",
+      "socket.io" : "latest"
+  }
+} 

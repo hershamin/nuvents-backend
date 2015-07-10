@@ -1,0 +1,40 @@
+doctype html
+html
+	head
+		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css')
+		link(rel='stylesheet' href='css/overrides.css')
+		title NuVents Updater
+
+	body(ng-app='NuVents-Scraper')
+		div.container-fluid(ng-controller='scrapeController')
+			h1 Website List 
+				small (Master)
+			button(class='btn btn-primary btn-sm', ng-click='newSite()')
+				strong New Site 
+				span(class='glyphicon glyphicon-plus')
+			div(class='panel panel-default')
+				table(class='table table-bordered')
+					tr
+						th.col-md-1 ID
+						th Title
+						th Website
+						th.col-md-1 More Info
+					tr(ng-repeat='site in scrapingSites | orderBy : "wid"')
+						td {{site.wid}}
+						td {{site.title}}
+						td {{site.url}}
+						td
+							button(class='btn btn-info btn-xs', ng-click='editSite(site.wid)')
+								span(class='glyphicon glyphicon-info-sign')
+
+			script(type='text/ng-template', id='scrapeDetailUI.html')
+				include scraperDetail
+
+		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js')
+		script(src='js/ui-bootstrap-tpls-0.9.0.min.js')
+		script(src='https://cdn.socket.io/socket.io-1.3.4.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js')
+		script(src='js/ui-ace.js')
+		script(src='js/main.js')
+		script(src='js/scrapeDetailCtrl.js')

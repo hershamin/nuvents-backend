@@ -1,0 +1,88 @@
+div.modal-header
+	div.row
+		div.col-md-7
+			h4.modal-title
+				div.form-group
+					label(for='titleInput') Title
+					input.form-control#titleInput(type='text', ng-model='scraper.title', placeholder='Scraper Title')
+		div.col-md-3
+			h4.modal-title
+				div.form-group
+					label(for='urlInput') Website
+					input.form-control#urlInput(type='text', ng-model='scraper.url', placeholder='Scraper Website')
+		div.col-md-2
+			div(align='right')
+				strong {{scraper.wid}}
+div.modal-body
+	form.form-horizontal(role='form')
+		div.form-group
+			label(for='startWebsiteInput', class='col-sm-2 control-label') Start Website:
+			div.col-sm-10
+				input.form-control#startWebsiteInput(type='text', ng-model='scraperDetail.startWebsite', placeholder='Scraper starts at this link')
+		div.form-group
+			label(for='hubURLInput', class='col-sm-2 control-label') Hub URLs:
+			div.col-sm-10
+				div.row(ng-repeat='hub in scraperDetail.hubURL track by $index', ng-if='scraperDetail.hubURL.length > 0')
+					div.col-sm-10
+						input.form-control(type='text', ng-model='hub.url', placeholder='Enter Hub URL')
+					div.col-sm-2
+						button(type='button', ng-click='addField($index, "hubURLs")')
+							span(class='glyphicon glyphicon-plus')
+						button(type='button', ng-click='removeField($index, "hubURLs")')
+							span(class='glyphicon glyphicon-minus')
+				div(ng-if='scraperDetail.hubURL.length == 0')
+					button(type='button', ng-click='addField(0, "hubURLs")')
+						span(class='glyphicon glyphicon-plus')
+		div.form-group
+			label(for='craRegInput', class='col-sm-2 control-label') Crawler RegEx:
+			div.col-sm-10
+				input.form-control#craRegInput(type='text', ng-model='scraperDetail.crawlerRegEx', placeholder='Crawler Regular Expression')
+		div.form-group
+			label(for='selectorInput', class='col-sm-2 control-label') Selectors:
+			div.col-sm-10
+				div.text-center.row
+					div.col-sm-4
+						label.control-label CSS Selector
+					div.col-sm-3
+						label.control-label HTML Attribute
+					div.col-sm-2
+						label.control-label Variable
+					div.col-sm-1
+						label.control-label Array
+				div.row(ng-repeat='selectItem in scraperDetail.selectors track by $index', ng-if='scraperDetail.selectors.length > 0')
+					div.col-sm-4(popover='{{selectItem.selector}}', popover-placement='bottom', popover-trigger='mouseenter')
+						input.form-control(type='text', ng-model='selectItem.selector', popover='CSS Selector for scraping data, eg. #evntDetail a.det small' ,popover-trigger='focus')
+					div.col-sm-3(popover='{{selectItem.htmlAttr}}', popover-placement='bottom', popover-trigger='mouseenter')
+						input.form-control(type='text', ng-model='selectItem.htmlAttr', popover='HTML attrbute for scraping, eg. "src" in <input src="..."></input>' ,popover-trigger='focus')
+					div.col-sm-2(popover='{{selectItem.variable}}', popover-placement='bottom', popover-trigger='mouseenter')
+						input.form-control(type='text', ng-model='selectItem.variable', popover='Variable to use when evaluating Javascript below' ,popover-trigger='focus')
+					div.col-sm-1
+						input.form-control(type='checkbox', ng-model='selectItem.array', popover='Choose whether to turn all matched elements into array' ,popover-trigger='focus')
+					div.col-sm-2
+						button(type='button', ng-click='addField($index, "selectors")')
+							span(class='glyphicon glyphicon-plus')
+						button(type='button', ng-click='removeField($index, "selectors")')
+							span(class='glyphicon glyphicon-minus')
+				div(ng-if='scraperDetail.selectors.length == 0')
+					button(type='button', ng-click='addField(0, "selectors")')
+						span(class='glyphicon glyphicon-plus')
+		div.form-group
+			label(for='scraperOutputs', class='col-sm-2 control-label') Outputs:
+			div.col-sm-10
+				input.form-control(type='text', ng-model='scraperDetail.eventAttr', placeholder='Event Attributes to store in MongoDB for the scraped data separated by ,')
+		div.form-group
+			label(for='jsevaluator', class='col-sm-2 control-label') JS Evaluate:
+			div.col-sm-10(style='height:250px')
+				div.form-control(ui-ace="{onLoad:aceLoaded}", rows='5', style='height:250px', ng-model='scraperDetail.jsEval', placeholder='Javascript to further process scraped data, eg. exports.<output>.geocode = <variable>.split()[0], exports.<output> = <variable>.replace(<text/regex>,<text>). NOTE: Separate each statement with ; if in the same line, Never end a line with ;')
+		div.form-group
+			label(for='eventIDs', class='col-sm-2 control-label') Event IDs:
+			div.col-sm-10
+				textarea.form-control(rows='2', disabled='true') {{scraperDetail.eid.join(' || ')}}
+	ul.list-group(ng-bind-html='testDataHtml')
+
+div.modal-footer
+	button(class='btn btn-warning', ng-click='test()') Test
+	button(class='btn btn-danger', ng-click='remove()', ng-if='detailUI.removeWebsiteBtn') Remove
+	button(class='btn btn-primary', ng-click='ok()', ng-if='!detailUI.removeWebsiteBtn') Save
+	button(class='btn btn-info', ng-click='update()', ng-if='detailUI.removeWebsiteBtn') Update
+	button(class='btn btn-default', ng-click='close()', ng-if='detailUI.closeDetailBtn') Close
