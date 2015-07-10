@@ -3,7 +3,7 @@ var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
 
 // Nearby Events
-exports.addEvent = function (socket, data) {
+exports.addEvent = function (data) {
     // Add event to database, includes event summary & event detail
     
     // Summary, then Details
@@ -13,7 +13,7 @@ exports.addEvent = function (socket, data) {
                         websiteName: data.websiteName})
     summary.save(function(err, summary) {
         if (err) { // bad request
-            socket.emit('event:add:status', 'Error adding event: ' + err.message);
+            return 'Error adding event: ' + err.message
         } else {
             // Process data before adding to event detail
             delete data.latitude
@@ -37,10 +37,10 @@ exports.addEvent = function (socket, data) {
                     // Remove previously saved summary object & exit
                     var errorDetail = err.message
                     Summary.remove({_id: summary.eid}, function(err){
-                        socket.emit('event:add:status', 'Error adding event: ' + errorDetail);
+                        return 'Error adding event: ' + errorDetail
                     });
                 } else {
-                    socket.emit('event:add:status', 'Event added: ' + summary.eid);
+                    return 'Event added: ' + summary.eid
                 }
             });
         }
@@ -49,7 +49,7 @@ exports.addEvent = function (socket, data) {
 }
 
 // Event Details
-exports.removeEvent = function (socket, data) {
+exports.removeEvent = function (data) {
     // Get event ID or website ID from request
     // remove event from database
     //   eid : Unique event ID
@@ -57,8 +57,7 @@ exports.removeEvent = function (socket, data) {
     //          ID of the website used to get event info
 
     if (data.eid == undefined && data.wid == undefined) { // no EID or WID found
-        socket.emit('event:del:status', 'Error deleting event: no eid or wid specified');
-        return;
+        return 'Error deleting event: no eid or wid specified'
     }
 
     var eventRemoveReq = {}
@@ -73,7 +72,7 @@ exports.removeEvent = function (socket, data) {
 
     Summary.remove(eventRemoveReq, function(err) {
         if (err) { // Error deleting event summary
-            socket.emit('event:del:status', 'Error deleting event(s): ' + err.message);
+            return 'Error deleting event(s): ' + err.message
         } else {
             if (!widRemoval) { // Remove event detail using EID instead of WID
                 eventRemoveReq.eid = data.eid
@@ -81,9 +80,9 @@ exports.removeEvent = function (socket, data) {
             }
             Detail.remove(eventRemoveReq, function(err) {
                 if (err) { // Error deleting event detail
-                    socket.emit('event:del:status', 'Error deleting event(s): ' + err.message);
+                    return 'Error deleting event(s): ' + err.message
                 } else {
-                    socket.emit('event:del:status', 'Event deleted(s): ' + data.eid);
+                    return 'Event deleted(s): ' + data.eid
                 }
             });
         }
