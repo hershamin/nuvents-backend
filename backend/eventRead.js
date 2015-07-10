@@ -3,7 +3,7 @@ var Summary = require('../Schema/summary.js')
 var Detail = require('../Schema/detail.js')
 
 // Nearby Events
-exports.findNearbyEvents = function (socket, data, rClient) {
+exports.findNearbyEvents = function (socket, data) {
     // Analyze request for lat,lng,rad
     // respond JSON with events
 
@@ -61,49 +61,42 @@ exports.findNearbyEvents = function (socket, data, rClient) {
 
 
     // Queries to accomplish: lat2 < lat4, lng2 > lng4
-
-    // Fetch eids that client already possesses
-    rClient.smembers(data.did + ':eid', function(err, clientEids) {
         
-        // Query and Send to client
-        var summStream = Summary.where('latitude').gt(lat2).lt(lat4).where('longitude').gt(lng4).lt(lng2).select('title latitude longitude date eid marker time media websiteName').lean().stream();
+    // Query and Send to client
+    var summStream = Summary.where('latitude').gt(lat2).lt(lat4).where('longitude').gt(lng4).lt(lng2).select('title latitude longitude date eid marker time media websiteName').lean().stream();
 
-        summStream.on('data', function (doc) {
-            doc.eid = doc._id
-            delete doc._id
-            if (clientEids.indexOf(doc.eid) == -1) { // Only send if client does not have it already
-                // Only send if the event is a future event
-                var times = doc.time
-                // Sort 'times' array by start time
-                times.sort(function (a,b) {
-                    return parseFloat(a.start) - parseFloat(b.start)
-                })
-                for (var i=0; i<times.length; i++) {
-                    if (parseFloat(times[i].start) > parseFloat(timeStamp)) { // Compare EPOCH times
-                        doc.time = times[i]
-                        socket.emit('event:nearby', JSON.stringify(doc));
-                        break;
-                    } else {
-                        // TODO: Trigger event sync
-                    }
-                }
+    summStream.on('data', function (doc) {
+        doc.eid = doc._id
+        delete doc._id
+        // Only send if the event is a future event
+        var times = doc.time
+        // Sort 'times' array by start time
+        times.sort(function (a,b) {
+            return parseFloat(a.start) - parseFloat(b.start)
+        })
+        for (var i=0; i<times.length; i++) {
+            if (parseFloat(times[i].start) > parseFloat(timeStamp)) { // Compare EPOCH times
+                doc.time = times[i]
+                socket.emit('event:nearby', JSON.stringify(doc));
+                break;
+            } else {
+                // TODO: Trigger event sync
             }
-        });
+        }
+    });
 
-        summStream.on('error', function (err) {
-            socket.emit('event:nearby:status', 'Error getting event summaries');
-        });
+    summStream.on('error', function (err) {
+        socket.emit('event:nearby:status', 'Error getting event summaries');
+    });
 
-        summStream.on('close', function () {
-            socket.emit('event:nearby:status', 'Event Summaries sent');
-        });
-
+    summStream.on('close', function () {
+        socket.emit('event:nearby:status', 'Event Summaries sent');
     });
 
 }
 
 // Event Details
-exports.getEventDetail = function (socket, data, rClient, callback) {
+exports.getEventDetail = function (socket, data, callback) {
     // Get event ID from request
     // respond JSON with details
     //   data.eid : Unique event ID

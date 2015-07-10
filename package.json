@@ -11,7 +11,12 @@
       "express" :  "latest",
       "mongoose" : "latest",
       "bson" : "latest",
-      "redis" : "latest",
-      "socket.io" : "latest"
+      "socket.io" : "latest",
+      "huntsman" : "latest",
+      "eval" : "latest",
+      "httpsync" : "latest",
+      "moment" : "latest",
+      "body-parser" : "latest",
+      "jade" : "latest"
   }
 } 

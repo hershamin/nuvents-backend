@@ -1,5 +1,5 @@
 // Send device resources manifest as JSON
-exports.sendResources = function(socket, data, rClient) {
+exports.sendResources = function(socket, data) {
 	// Get Device ID (did) and Device Model (dm)
 	//	Data is sent back using "resources" or "resources:status" event
 
@@ -55,14 +55,5 @@ exports.sendResources = function(socket, data, rClient) {
 		}
 	}
 
-	// Remove client from redis to add new entry to keep track of Event IDs of the client
-	rClient.del(data.did + ':eid', function (err, reply) {
-		if (err) {
-			socket.emit("resources:status", "Error getting resources: unable to add client session")
-		} else {
-			socket.emit("resources", JSON.stringify(toSend));
-			socket.emit("resources:status", "Resources sent");
-		}
-	});
-
+	socket.emit("resources", JSON.stringify(toSend)); // Send resources to client
 }

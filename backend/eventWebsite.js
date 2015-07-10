@@ -3,7 +3,7 @@ var Summary = require('../Schema/summary.js')
 var Detail = require('../Schema/detail.js')
 
 // Event Websites
-exports.eventStatus = function (socket, data, rClient) {
+exports.eventStatus = function (socket, data) {
     // Analyze request event link and status code
 
     // Check if JSON needs to be parsed

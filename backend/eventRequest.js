@@ -3,7 +3,7 @@ var Summary = require('../Schema/summary.js')
 var Detail = require('../Schema/detail.js')
 
 // Event request to add city
-exports.eventRequest = function (socket, data, rClient) {
+exports.eventRequest = function (socket, data) {
 	// Convert raw data string into json
 	var rawStr = data.replace('?','').replace(/\%20/g,' ').split('&')
 	var data = {}
