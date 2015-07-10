@@ -1,13 +1,8 @@
 // Dependencies
 var huntsman = require('huntsman')
 var jsEvaluator = require('eval')
-var writeEvents = require('./backend/eventWrite.js');
+var writeEvents = require('./eventWrite.js');
 var moment = require('moment')
-
-// Client socket functions
-clientSocket.on('connect', function(){
-	console.log('Connected to NuVents backend')
-});
 
 // Google geocoding function
 function googleGeocoder(address) {
