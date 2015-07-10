@@ -173,7 +173,7 @@ exports.runWebsite = function(data, socket) {
 
 		eventDetailTemp = JSON.stringify(eventDetail)
 		eventDetail = JSON.parse(eventDetailTemp)
-		writeStatus = eventWrite.addEvent(eventDetail)
+		writeStatus = writeEvents.addEvent(eventDetail)
 		socket.emit('website:run:status', writeStatus);
 
 	});
