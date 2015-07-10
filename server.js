@@ -8,7 +8,7 @@ var httpServerIO = require('http').Server(app)
 var io = require('socket.io')(httpServerIO)
 
 // MongoDB
-var mongoConnURI = 'mongodb://localhost:27017/nuvents'
+var mongoConnURI = 'mongodb://root:K8pMpnMnLsqdU5WWTT9X@novus.modulusmongo.net:27017/xoJuda4z'
 var mongoose = require('mongoose')
 mongoose.connect(mongoConnURI)
 
