@@ -1,7 +1,7 @@
 // Dependencies
 var huntsman = require('huntsman')
 var jsEvaluator = require('eval')
-var clientSocket = require('socket.io-client')('http://repo.nuvents.com:1026/')
+var writeEvents = require('./backend/eventWrite.js');
 var moment = require('moment')
 
 // Client socket functions
@@ -31,19 +31,13 @@ exports.runWebsite = function(data, socket) {
 
 	// Delete previously stored events from this website
 	for (var i=0; i<data.eid.length; i++) {
-		clientSocket.emit('event:del', {eid:data.eid[i]})
+		delStatus = writeEvents.removeEvent({eid:data.eid[i]})
+		socket.emit('website:run:status', delStatus)
 	}
 
 	// Delete previously stored events using website id
-	clientSocket.emit('event:del', {wid:data.wid})
-
-	// Listen on events from backend
-	clientSocket.on('event:add:status', function (data){
-		socket.emit('website:test:status', data);
-	});
-	clientSocket.on('event:del:status', function (data){
-		socket.emit('website:test:status', data);
-	});
+	widDelStatus = writeEvents.removeEvent({wid:data.wid})
+	socket.emit('website:run:status', widDelStatus)
 
 	var spider = huntsman.spider()
 
@@ -54,23 +48,23 @@ exports.runWebsite = function(data, socket) {
 	]
 
 	spider.on('HUNTSMAN_EXIT', function() {
-		socket.emit('website:test:status','stop');
+		socket.emit('website:run:status','stop');
 	});
 
 	spider.on(new RegExp(data.crawlerRegEx), function (err, res) {
 
 		if (err) { // Found some error
-			socket.emit('website:test:progress', 'Error on ' + res.uri)
+			socket.emit('website:run:progress', 'Error on ' + res.uri)
 			return;
 		}
 		
 		var $ = res.extension.cheerio;
 		if (!$) {
-			socket.emit('website:test:progress', 'No HTML on ' + res.uri)
+			socket.emit('website:run:progress', 'No HTML on ' + res.uri)
 			return;
 		}
 
-		socket.emit('website:test:progress', res.uri) // Send URL parsed
+		socket.emit('website:run:progress', res.uri) // Send URL parsed
 
 		var eventDetail = {}
 		eventDetail.wid = data.wid
@@ -171,7 +165,6 @@ exports.runWebsite = function(data, socket) {
 
 			// Send processed text via socket
 			if (processedText) {
-				socket.emit('website:test:progress', '<b>' + variable + '</b>: ' + processedText)
 				if (variable == 'location') {
 					eventDetail.latitude = processedText.split(',')[0]
 					eventDetail.longitude = processedText.split(',')[1]
@@ -185,7 +178,8 @@ exports.runWebsite = function(data, socket) {
 
 		eventDetailTemp = JSON.stringify(eventDetail)
 		eventDetail = JSON.parse(eventDetailTemp)
-		clientSocket.emit('event:add',eventDetail)
+		writeStatus = eventWrite.addEvent(eventDetail)
+		socket.emit('website:run:status', writeStatus);
 
 	});
 
@@ -196,6 +190,6 @@ exports.runWebsite = function(data, socket) {
 
 	spider.queue.add(data.startWebsite); // Add start Website
 	spider.start();
-	socket.emit('website:test:status','start');
+	socket.emit('website:run:status','start');
 
 }
