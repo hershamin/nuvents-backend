@@ -26,13 +26,15 @@ exports.runWebsite = function(data, socket) {
 
 	// Delete previously stored events from this website
 	for (var i=0; i<data.eid.length; i++) {
-		delStatus = writeEvents.removeEvent({eid:data.eid[i]})
-		socket.emit('website:run:status', delStatus)
+		writeEvents.removeEvent({eid:data.eid[i]}, function (data) {
+			socket.emit('website:run:status', data)
+		});
 	}
 
 	// Delete previously stored events using website id
-	widDelStatus = writeEvents.removeEvent({wid:data.wid})
-	socket.emit('website:run:status', widDelStatus)
+	widDelStatus = writeEvents.removeEvent({wid:data.wid}, function (data) {
+		socket.emit('website:run:status', data)
+	});
 
 	var spider = huntsman.spider()
 
@@ -173,8 +175,9 @@ exports.runWebsite = function(data, socket) {
 
 		eventDetailTemp = JSON.stringify(eventDetail)
 		eventDetail = JSON.parse(eventDetailTemp)
-		writeStatus = writeEvents.addEvent(eventDetail)
-		socket.emit('website:run:status', writeStatus);
+		writeStatus = writeEvents.addEvent(eventDetail, function (data) {
+			socket.emit('website:run:status', data);
+		});
 
 	});
 

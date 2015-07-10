@@ -3,7 +3,7 @@ var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
 
 // Nearby Events
-exports.addEvent = function (data) {
+exports.addEvent = function (data, callback) {
     // Add event to database, includes event summary & event detail
     
     // Summary, then Details
@@ -13,7 +13,7 @@ exports.addEvent = function (data) {
                         websiteName: data.websiteName})
     summary.save(function(err, summary) {
         if (err) { // bad request
-            return 'Error adding event: ' + err.message
+            callback('Error adding event: ' + err.message)
         } else {
             // Process data before adding to event detail
             delete data.latitude
@@ -37,10 +37,10 @@ exports.addEvent = function (data) {
                     // Remove previously saved summary object & exit
                     var errorDetail = err.message
                     Summary.remove({_id: summary.eid}, function(err){
-                        return 'Error adding event: ' + errorDetail
+                        callback('Error adding event: ' + errorDetail)
                     });
                 } else {
-                    return 'Event added: ' + summary.eid
+                    callback('Event added: ' + summary.eid)
                 }
             });
         }
@@ -49,7 +49,7 @@ exports.addEvent = function (data) {
 }
 
 // Event Details
-exports.removeEvent = function (data) {
+exports.removeEvent = function (data, callback) {
     // Get event ID or website ID from request
     // remove event from database
     //   eid : Unique event ID
@@ -57,7 +57,7 @@ exports.removeEvent = function (data) {
     //          ID of the website used to get event info
 
     if (data.eid == undefined && data.wid == undefined) { // no EID or WID found
-        return 'Error deleting event: no eid or wid specified'
+        callback('Error deleting event: no eid or wid specified')
     }
 
     var eventRemoveReq = {}
@@ -72,7 +72,7 @@ exports.removeEvent = function (data) {
 
     Summary.remove(eventRemoveReq, function(err) {
         if (err) { // Error deleting event summary
-            return 'Error deleting event(s): ' + err.message
+            callback('Error deleting event(s): ' + err.message)
         } else {
             if (!widRemoval) { // Remove event detail using EID instead of WID
                 eventRemoveReq.eid = data.eid
@@ -80,9 +80,9 @@ exports.removeEvent = function (data) {
             }
             Detail.remove(eventRemoveReq, function(err) {
                 if (err) { // Error deleting event detail
-                    return 'Error deleting event(s): ' + err.message
+                    callback('Error deleting event(s): ' + err.message)
                 } else {
-                    return 'Event deleted(s): ' + data.eid
+                    callback('Event deleted(s): ' + data.eid)
                 }
             });
         }
