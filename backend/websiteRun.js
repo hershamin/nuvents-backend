@@ -1,12 +1,49 @@
 // Dependencies
 var huntsman = require('huntsman')
 var jsEvaluator = require('eval')
+var clientSocket = require('socket.io-client')('http://repo.nuvents.com:1026/')
 var moment = require('moment')
+
+// Client socket functions
+clientSocket.on('connect', function(){
+	console.log('Connected to NuVents backend')
+});
+
+// Google geocoding function
+function googleGeocoder(address) {
+	httpSync = require('httpsync')
+	var req = httpSync.request({
+		url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + address.replace(/\s/g,"+")
+	});
+	var res = JSON.parse(req.end().data)
+
+	if (res.results[0] == undefined) {
+		return undefined;
+	} else {
+		return res.results[0].geometry.location;
+	}
+}
 
 // Test website, request is received using web sockets
 exports.testWebsite = function(data, socket) {
 	// data : JSON data regarding the scraper to test
 	// socket : Web socket object involved with this connection
+
+	// Delete previously stored events from this website
+	for (var i=0; i<data.eid.length; i++) {
+		clientSocket.emit('event:del', {eid:data.eid[i]})
+	}
+
+	// Delete previously stored events using website id
+	clientSocket.emit('event:del', {wid:data.wid})
+
+	// Listen on events from backend
+	clientSocket.on('event:add:status', function (data){
+		socket.emit('website:test:status', data);
+	});
+	clientSocket.on('event:del:status', function (data){
+		socket.emit('website:test:status', data);
+	});
 
 	var spider = huntsman.spider()
 
@@ -99,7 +136,9 @@ exports.testWebsite = function(data, socket) {
 			if (rawProcessedObj[variable].geocode != undefined) { // Intent to geocode
 				textToGeocode = rawProcessedObj[variable].geocode.trim();
 				textToGeocode = textToGeocode.replace(/\s\s+/g, '');
-				processedText = 'GEOCODE: ' + textToGeocode
+				geoText = googleGeocoder(textToGeocode)
+				if (geoText == undefined) { continue } // Skip if undefined
+				processedText = geoText.lat + ',' + geoText.lng
 			} else if (variable == 'time') { // Intent to use momentJS (http://momentjs.com/)
 				var timeRaw = []
 				if (Array.isArray(rawProcessedObj.time)) {
@@ -146,6 +185,7 @@ exports.testWebsite = function(data, socket) {
 
 		eventDetailTemp = JSON.stringify(eventDetail)
 		eventDetail = JSON.parse(eventDetailTemp)
+		clientSocket.emit('event:add',eventDetail)
 
 	});
 
