@@ -91,6 +91,6 @@ io.on('connection', function (socket) {
 });
 
 // Initiate Server
-httpServerIO.listen(1026);
-console.log("Listening on Port 1026")
+httpServerIO.listen(1027);
+console.log("Listening on Port 1027")
 console.log("MongoDB on " + mongoConnURI)

@@ -82,6 +82,7 @@ div.modal-body
 
 div.modal-footer
 	button(class='btn btn-warning', ng-click='test()') Test
+	button(class='btn btn-success', ng-click='run()', ng-if='detailUI.runBtn') Run
 	button(class='btn btn-danger', ng-click='remove()', ng-if='detailUI.removeWebsiteBtn') Remove
 	button(class='btn btn-primary', ng-click='ok()', ng-if='!detailUI.removeWebsiteBtn') Save
 	button(class='btn btn-info', ng-click='update()', ng-if='detailUI.removeWebsiteBtn') Update
