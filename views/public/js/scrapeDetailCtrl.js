@@ -10,7 +10,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 		runBtn: false
 	}
 
-	$scope.socketConn = 'http://repo.nuvents.com:1027/'
+	$scope.socketConn = 'http://backend.nuvents.com/'
 
 	// called when ace JS editor is loaded
 	$scope.aceLoaded = function(editor) {
