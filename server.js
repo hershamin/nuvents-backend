@@ -33,6 +33,7 @@ var eventReq = require('./backend/eventRequest.js');
 var websiteRead = require('./backend/websiteRead.js'); // For website information requests
 var websiteWrite = require('./backend/websiteWrite.js'); // For website writing requests
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
+var websiteRun = require('./backend/websiteRun.js'); // For website running requests
 
 // Main page, render index.jade page
 app.get('/', function(req, res, next){ res.render('scrapers'); });
@@ -78,8 +79,13 @@ io.on('connection', function (socket) {
 	});
 
 	// Testing website scraper
-	socket.on('website:test', function(data) { // Server received scraper json
+	socket.on('website:test', function (data) { // Server received scraper json
 		websiteTest.testWebsite(data, socket);
+	});
+
+	// Adding events to DB using web scraper
+	socket.on('website:run', function (data) {
+		websiteRun.runWebsite(data, socket);
 	});
 
 });

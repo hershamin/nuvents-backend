@@ -24,8 +24,8 @@ function googleGeocoder(address) {
 	}
 }
 
-// Test website, request is received using web sockets
-exports.testWebsite = function(data, socket) {
+// Run website, scrap website & add to DB
+exports.runWebsite = function(data, socket) {
 	// data : JSON data regarding the scraper to test
 	// socket : Web socket object involved with this connection
 
