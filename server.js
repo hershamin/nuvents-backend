@@ -28,7 +28,6 @@ app.use(bodyParser.urlencoded({extended:true}));
 // Routing Dependencies
 var deviceInit = require('./backend/deviceInitial.js');
 var readEvents = require('./backend/eventRead.js');
-var writeEvents = require('./backend/eventWrite.js');
 var eventWeb = require('./backend/eventWebsite.js');
 var eventReq = require('./backend/eventRequest.js');
 var websiteRead = require('./backend/websiteRead.js'); // For website information requests
@@ -63,14 +62,6 @@ io.on('connection', function (socket) {
 		readEvents.getEventDetail(socket, data, callback);
 	});
 
-	// Routing event requests from updater
-	socket.on('event:add', function (data) { // Updater wants to add event to DB
-		writeEvents.addEvent(socket, data);
-	});
-	socket.on('event:del', function (data) { // updater wants to delete event from DB
-		writeEvents.removeEvent(socket, data);
-	});
-
 	// Server-Client pinging
 	socket.on('ping', function (data) {
 		socket.emit('pong', data);
@@ -84,6 +75,11 @@ io.on('connection', function (socket) {
 	// Events request to add city
 	socket.on('event:request', function (data) {
 		eventReq.eventRequest(socket, data);
+	});
+
+	// Testing website scraper
+	socket.on('website:test', function(data) { // Server received scraper json
+		websiteTest.testWebsite(data, socket);
 	});
 
 });

@@ -39,10 +39,10 @@ exports.testWebsite = function(data, socket) {
 
 	// Listen on events from backend
 	clientSocket.on('event:add:status', function (data){
-		socket.emit('status', data);
+		socket.emit('website:test:status', data);
 	});
 	clientSocket.on('event:del:status', function (data){
-		socket.emit('status', data);
+		socket.emit('website:test:status', data);
 	});
 
 	var spider = huntsman.spider()
@@ -54,23 +54,23 @@ exports.testWebsite = function(data, socket) {
 	]
 
 	spider.on('HUNTSMAN_EXIT', function() {
-		socket.emit('status','stop');
+		socket.emit('website:test:status','stop');
 	});
 
 	spider.on(new RegExp(data.crawlerRegEx), function (err, res) {
 
 		if (err) { // Found some error
-			socket.emit('progress', 'Error on ' + res.uri)
+			socket.emit('website:test:progress', 'Error on ' + res.uri)
 			return;
 		}
 		
 		var $ = res.extension.cheerio;
 		if (!$) {
-			socket.emit('progress', 'No HTML on ' + res.uri)
+			socket.emit('website:test:progress', 'No HTML on ' + res.uri)
 			return;
 		}
 
-		socket.emit('progress', res.uri) // Send URL parsed
+		socket.emit('website:test:progress', res.uri) // Send URL parsed
 
 		var eventDetail = {}
 		eventDetail.wid = data.wid
@@ -171,7 +171,7 @@ exports.testWebsite = function(data, socket) {
 
 			// Send processed text via socket
 			if (processedText) {
-				socket.emit('progress', '<b>' + variable + '</b>: ' + processedText)
+				socket.emit('website:test:progress', '<b>' + variable + '</b>: ' + processedText)
 				if (variable == 'location') {
 					eventDetail.latitude = processedText.split(',')[0]
 					eventDetail.longitude = processedText.split(',')[1]
@@ -196,6 +196,6 @@ exports.testWebsite = function(data, socket) {
 
 	spider.queue.add(data.startWebsite); // Add start Website
 	spider.start();
-	socket.emit('status','start');
+	socket.emit('website:test:status','start');
 
 }

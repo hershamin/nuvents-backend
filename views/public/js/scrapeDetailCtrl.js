@@ -95,8 +95,8 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 		var socket = io.connect('http://repo.nuvents.com:1025/')
 		$scope.scraperDetail.wid = $scope.scraper.wid // Add website id to scraper detail
 		$scope.scraperDetail.websiteName = $scope.scraper.title // Add website name to scraper detail
-		socket.emit('request', $scope.scraperDetail) // Send scraper data for request
-		socket.on('progress', function(data) { // Receive test data from server
+		socket.emit('website:test', $scope.scraperDetail) // Send scraper data for request
+		socket.on('website:test:progress', function(data) { // Receive test data from server
 			$scope.$apply(function() {
 				if (data.substring(0,4) == 'http') {
 					$scope.testData += '<li class="list-group-item">' + data + '</li>'
@@ -106,7 +106,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 				$scope.testDataHtml = $sce.trustAsHtml($scope.testData)
 			});
 		});
-		socket.on('status', function(data) {
+		socket.on('website:test:status', function(data) {
 			var currStatus;
 			if (data.indexOf('start') > -1) { // Spider starts
 				$scope.$apply(function() {
