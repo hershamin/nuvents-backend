@@ -1,6 +1,7 @@
 ﻿// Initialization
 var express = require('express')
 var app = express()
+var listenPort = process.env.PORT || 1027
 
 // socket.io configuration
 var httpServerIO = require('http').Server(app)
@@ -91,6 +92,6 @@ io.on('connection', function (socket) {
 });
 
 // Initiate Server
-httpServerIO.listen(1027);
-console.log("Listening on Port 1027")
+httpServerIO.listen(listenPort);
+console.log("Listening on Port " + listenPort)
 console.log("MongoDB on " + mongoConnURI)
