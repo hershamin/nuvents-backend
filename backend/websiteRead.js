@@ -1,6 +1,6 @@
 // Dependencies
-var Summary = require('../Schema/summary.js');
-var Detail = require('../Schema/detail.js');
+var Summary = require('../Schema/websiteSummary.js');
+var Detail = require('../Schema/websiteDetail.js');
 
 // Return all websites (summary) to user
 exports.allWebsites = function(req, res, next) {
