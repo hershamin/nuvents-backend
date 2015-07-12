@@ -44,7 +44,7 @@ passport.use(new LocalStrategy (
 
 //Try out the new page
 app.get('/login', function(req, res){
-  res.render('login', { user: req.user});
+  res.render('logintest', { user: req.user});
 });
 
 // MongoDB
