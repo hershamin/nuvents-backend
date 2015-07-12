@@ -7,6 +7,46 @@ var listenPort = process.env.PORT || 1027
 var httpServerIO = require('http').Server(app)
 var io = require('socket.io')(httpServerIO)
 
+//Setup Passport Authentication
+var passport = require('passport')
+	, LocalStrategy = require('passport-local').Strategy;
+
+//Make some users
+var users = [
+	{ username: 'nuvents', password: 'nuvents123'}
+];
+
+//Function to find the user
+function findUsername(username, us) {
+	for (var i = 0, length = users.length; i < length; i++) {
+		var user = users[i];
+		if (user.username == username) {
+			return us(null, user);
+		}
+
+	}
+	return us(null,null);
+}
+
+//Setup the Nuvents Strategy
+passport.use(new LocalStrategy (
+	function(username, password, done) {
+
+		//Find the user, non DB version.
+		findUsername(username, function(err,user) {
+			if (err) { return done(err); }
+			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
+			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
+		return done(null, user);
+		});
+	})
+);
+
+//Try out the new page
+app.get('/login', function(req, res){
+  res.render('login', { user: req.user});
+});
+
 // MongoDB
 var mongoConnURI = 'mongodb://root:K8pMpnMnLsqdU5WWTT9X@novus.modulusmongo.net:27017/xoJuda4z'
 var mongoose = require('mongoose')
