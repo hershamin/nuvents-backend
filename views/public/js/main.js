@@ -15,6 +15,14 @@ app.controller('scrapeController', function($scope, $modal, $http) {
 	};
 	init();
 
+	// Logout function
+	var logout = function() {
+		// Get current base url & add logout endpoint
+		var url = window.location.href.split('/').splice(0,3)
+		url = url.join('/') + '/logout'
+		window.location = url // Go to logout url
+	}
+
 	$scope.newSite = function() {
 		// Present new site configuration interface
 		var modalInstance = $modal.open({
@@ -33,7 +41,10 @@ app.controller('scrapeController', function($scope, $modal, $http) {
 		modalInstance.result.then(function() {
 			// Refresh Site List
 			init();
-		}, function() {});
+			logout() // logout when modal is closed or dismissed
+		}, function() {
+			logout() // logout when modal is closed or dismissed
+		});
 	}
 
 	$scope.editSite = function(wid) {
@@ -54,7 +65,10 @@ app.controller('scrapeController', function($scope, $modal, $http) {
 		modalInstance.result.then(function() {
 			// Refresh Site List
 			init();
-		}, function() {});
+			logout() // logout when modal is closed or dismissed
+		}, function() {
+			logout() // logout when modal is closed or dismissed
+		});
 	}
 	
 });
