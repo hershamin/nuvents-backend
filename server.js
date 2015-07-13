@@ -3,6 +3,55 @@ var express = require('express')
 var app = express()
 var listenPort = process.env.PORT || 1027
 
+//Setup Initialization
+var flash = require('connect-flash');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+//Make some users
+var users = [
+	{ username: 'nuvents', password: 'nuvents123'}
+];
+
+//Function to find the user
+function findUsername(username, us) {
+	for (var i = 0, length = users.length; i < length; i++) {
+		var user = users[i];
+		if (user.username === username) {
+			return us(null, user);
+		}
+
+	}
+	return us(null,null);
+}
+
+//Serialize Users
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+//Setup the Nuvents Strategy
+passport.use(new LocalStrategy ({
+		usernameField: 'username',
+		passwordField: 'password' },
+	
+		function(username, password, done) {
+
+		//Find the user, non DB version.
+		findUsername(username, function(err,user) {
+			if (err) { return done(err); }
+			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
+			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
+		return done(null, user);
+		});
+	})
+);
+
+
 // socket.io configuration
 var httpServerIO = require('http').Server(app)
 var io = require('socket.io')(httpServerIO)
@@ -32,58 +81,11 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-//Setup Passport Authentication
-var flash = require('connect-flash');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+
 
 //Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-//Make some users
-var users = [
-	{ username: 'nuvents', password: 'nuvents123'}
-];
-
-//Function to find the user
-function findUsername(username, us) {
-	for (var i = 0, length = users.length; i < length; i++) {
-		var user = users[i];
-		if (user.username === username) {
-			return us(null, user);
-		}
-
-	}
-	return us(null,null);
-}
-
-//Setup the Nuvents Strategy
-passport.use(new LocalStrategy ({
-		usernameField: 'username',
-		passwordField: 'password' },
-	
-		function(username, password, done) {
-
-		//Find the user, non DB version.
-		findUsername(username, function(err,user) {
-			if (err) { return done(err); }
-			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
-			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
-		return done(null, user);
-		});
-	})
-);
-
-//Serialize Users
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
 
 // Routing Dependencies
 var deviceInit = require('./backend/deviceInitial.js');
