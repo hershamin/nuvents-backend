@@ -7,67 +7,6 @@ var listenPort = process.env.PORT || 1027
 var httpServerIO = require('http').Server(app)
 var io = require('socket.io')(httpServerIO)
 
-//Setup Passport Authentication
-var flash = require('connect-flash')
-	, passport = require('passport')
-	, LocalStrategy = require('passport-local').Strategy;
-
-//Make some users
-var users = [
-	{ username: 'nuvents', password: 'nuvents123'}
-];
-
-//Function to find the user
-function findUsername(username, us) {
-	for (var i = 0, length = users.length; i < length; i++) {
-		var user = users[i];
-		if (user.username == username) {
-			return us(null, user);
-		}
-
-	}
-	return us(null,null);
-}
-
-//Setup the Nuvents Strategy
-passport.use(new LocalStrategy (
-	function(username, password, done) {
-
-		//Find the user, non DB version.
-		findUsername(username, function(err,user) {
-			if (err) { return done(err); }
-			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
-			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
-		return done(null, user);
-		});
-	})
-);
-
-//Try out the new page
-app.get('/login', function(req, res){
-  res.render('logintest', { user: req.user});
-});
-
-//Authenticate a user
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login'},
-  function(req, res) {
-  res.redirect('/');
-  }
-));
-
-//Ensure the user is authenticated
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) { return next();}
-	res.redirect('/login');
-}
-
-//Insure a logout
-// app.get('/logout', function(req, res){
-//   req.logout();
-//   res.redirect('/');
-// });
-
 app.listen(3000, function() {
   console.log('Express server listening on port 3000');
 });
@@ -155,6 +94,67 @@ io.on('connection', function (socket) {
 	});
 
 });
+
+//Setup Passport Authentication
+var flash = require('connect-flash')
+	, passport = require('passport')
+	, LocalStrategy = require('passport-local').Strategy;
+
+//Make some users
+var users = [
+	{ username: 'nuvents', password: 'nuvents123'}
+];
+
+//Function to find the user
+function findUsername(username, us) {
+	for (var i = 0, length = users.length; i < length; i++) {
+		var user = users[i];
+		if (user.username == username) {
+			return us(null, user);
+		}
+
+	}
+	return us(null,null);
+}
+
+//Setup the Nuvents Strategy
+passport.use(new LocalStrategy (
+	function(username, password, done) {
+
+		//Find the user, non DB version.
+		findUsername(username, function(err,user) {
+			if (err) { return done(err); }
+			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
+			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
+		return done(null, user);
+		});
+	})
+);
+
+//Try out the new page
+app.get('/login', function(req, res){
+  res.render('logintest', { user: req.user});
+});
+
+//Authenticate a user
+app.post('/login',
+  passport.authenticate('local', { failureRedirect: '/login'},
+  function(req, res) {
+  res.redirect('/');
+  }
+));
+
+//Ensure the user is authenticated
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) { return next();}
+	res.redirect('/login');
+}
+
+//Insure a logout
+// app.get('/logout', function(req, res){
+//   req.logout();
+//   res.redirect('/');
+// });
 
 // Initiate Server
 httpServerIO.listen(listenPort);
