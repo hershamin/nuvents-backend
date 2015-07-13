@@ -121,6 +121,12 @@ app.post('/login', function(req, res, next) {
 	})(req,res,next)
 });
 
+//Insure a logout
+app.get('/logout', function(req, res){
+   req.logout();
+   res.redirect('/');
+});
+
 // Main page, render index.jade page
 app.get('/updater', function(req, res, next){ res.render('scrapers'); });
 
@@ -175,12 +181,6 @@ io.on('connection', function (socket) {
 	});
 
 });
-
-//Insure a logout
-// app.get('/logout', function(req, res){
-//   req.logout();
-//   res.redirect('/');
-// });
 
 // Initiate Server
 httpServerIO.listen(listenPort);
