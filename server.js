@@ -33,9 +33,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 //Setup Passport Authentication
-var flash = require('connect-flash')
-	, passport = require('passport')
-	, LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 //Make some users
 var users = [
@@ -55,8 +55,9 @@ function findUsername(username, us) {
 }
 
 //Setup the Nuvents Strategy
-passport.use(new LocalStrategy (
-	function(username, password, done) {
+passport.use('local',new LocalStrategy (
+	
+		function(username, password, done) {
 
 		//Find the user, non DB version.
 		findUsername(username, function(err,user) {
@@ -68,6 +69,17 @@ passport.use(new LocalStrategy (
 	})
 );
 
+//Serialize Users
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+ 
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
 // Routing Dependencies
 var deviceInit = require('./backend/deviceInitial.js');
 var readEvents = require('./backend/eventRead.js');
@@ -78,8 +90,9 @@ var websiteWrite = require('./backend/websiteWrite.js'); // For website writing 
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
 var websiteRun = require('./backend/websiteRun.js'); // For website running requests
 
-//Initialize
+//Initialize passport
 app.use(passport.initialize());
+app.use(passport.session());
 
 // Main page, render index.jade page
 app.get('/', function(req, res, next){ res.render('scrapers'); });
