@@ -37,6 +37,11 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+//Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 //Make some users
 var users = [
 	{ username: 'nuvents', password: 'nuvents123'}
@@ -55,7 +60,7 @@ function findUsername(username, us) {
 }
 
 //Setup the Nuvents Strategy
-passport.use('local',new LocalStrategy (
+passport.use(new LocalStrategy (
 	
 		function(username, password, done) {
 
@@ -71,13 +76,11 @@ passport.use('local',new LocalStrategy (
 
 //Serialize Users
 passport.serializeUser(function(user, done) {
-  done(null, user._id);
+  done(null, user);
 });
- 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
 });
 
 // Routing Dependencies
@@ -89,10 +92,6 @@ var websiteRead = require('./backend/websiteRead.js'); // For website informatio
 var websiteWrite = require('./backend/websiteWrite.js'); // For website writing requests
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
 var websiteRun = require('./backend/websiteRun.js'); // For website running requests
-
-//Initialize passport
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Main page, render index.jade page
 app.get('/', function(req, res, next){ res.render('scrapers'); });
@@ -158,7 +157,7 @@ app.get('/login', function(req, res){
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login'},
   function(req, res) {
-  res.render('scrapers');
+  res.redirect('/');
   }
 ));
 
