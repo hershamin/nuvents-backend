@@ -2,6 +2,7 @@
 var express = require('express')
 var app = express()
 var listenPort = process.env.PORT || 1027
+var session = require('express-session')
 
 //Setup Initialization
 var flash = require('connect-flash');
@@ -72,7 +73,10 @@ app.use(express.static(path.join(__dirname, 'views', 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-//Initialize passport
+//Initialize sessions
+app.use(session(
+	{secret:'NuVents', saveUninitialized:false, resave:false, cookie:{expires:300000}}
+));
 
 // Misc express settings
 app.set('x-powered-by', false);
@@ -89,7 +93,7 @@ app.use(passport.session());
 //Ensure the user is authenticated
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next();}
-	res.render('/login');
+	res.redirect('/login');
 }
 
 // Routing Dependencies
@@ -117,27 +121,30 @@ app.post('/login', function(req, res, next) {
 			// return to login
 			return res.redirect('/login')
 		}
-		res.redirect('/updater')
+		req.logIn(user, function(err){
+			if (err) { return next(err) }
+			return res.redirect('/updater')
+		})
 	})(req,res,next)
 });
 
 //Insure a logout
 app.get('/logout', function(req, res){
    req.logout();
-   res.redirect('/');
+   res.redirect('/login');
 });
 
 // Main page, render index.jade page
-app.get('/updater', function(req, res, next){ res.render('scrapers'); });
+app.get('/updater', ensureAuthenticated, function(req, res, next){ res.render('scrapers'); });
 
 // Serve information requests
-app.get('/website', websiteRead.allWebsites);
-app.get('/website/:wid', websiteRead.websiteDetail);
-app.get('/info/availID', websiteRead.availWID);
+app.get('/website', ensureAuthenticated, websiteRead.allWebsites);
+app.get('/website/:wid', ensureAuthenticated, websiteRead.websiteDetail);
+app.get('/info/availID', ensureAuthenticated, websiteRead.availWID);
 
 // Writing and Removing website requests
-app.post('/website', websiteWrite.writeWebsite);
-app.delete('/website/:wid', websiteWrite.removeWebsite);
+app.post('/website', ensureAuthenticated, websiteWrite.writeWebsite);
+app.delete('/website/:wid', ensureAuthenticated, websiteWrite.removeWebsite);
 
 // Real-time routing
 io.on('connection', function (socket) {
