@@ -32,6 +32,42 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+//Setup Passport Authentication
+var flash = require('connect-flash')
+	, passport = require('passport')
+	, LocalStrategy = require('passport-local').Strategy;
+
+//Make some users
+var users = [
+	{ username: 'nuvents', password: 'nuvents123'}
+];
+
+//Function to find the user
+function findUsername(username, us) {
+	for (var i = 0, length = users.length; i < length; i++) {
+		var user = users[i];
+		if (user.username == username) {
+			return us(null, user);
+		}
+
+	}
+	return us(null,null);
+}
+
+//Setup the Nuvents Strategy
+passport.use(new LocalStrategy (
+	function(username, password, done) {
+
+		//Find the user, non DB version.
+		findUsername(username, function(err,user) {
+			if (err) { return done(err); }
+			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
+			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
+		return done(null, user);
+		});
+	})
+);
+
 // Routing Dependencies
 var deviceInit = require('./backend/deviceInitial.js');
 var readEvents = require('./backend/eventRead.js');
@@ -41,6 +77,9 @@ var websiteRead = require('./backend/websiteRead.js'); // For website informatio
 var websiteWrite = require('./backend/websiteWrite.js'); // For website writing requests
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
 var websiteRun = require('./backend/websiteRun.js'); // For website running requests
+
+//Initialize
+app.use(passport.initialize());
 
 // Main page, render index.jade page
 app.get('/', function(req, res, next){ res.render('scrapers'); });
@@ -96,42 +135,6 @@ io.on('connection', function (socket) {
 	});
 
 });
-
-//Setup Passport Authentication
-var flash = require('connect-flash')
-	, passport = require('passport')
-	, LocalStrategy = require('passport-local').Strategy;
-
-//Make some users
-var users = [
-	{ username: 'nuvents', password: 'nuvents123'}
-];
-
-//Function to find the user
-function findUsername(username, us) {
-	for (var i = 0, length = users.length; i < length; i++) {
-		var user = users[i];
-		if (user.username == username) {
-			return us(null, user);
-		}
-
-	}
-	return us(null,null);
-}
-
-//Setup the Nuvents Strategy
-passport.use(new LocalStrategy (
-	function(username, password, done) {
-
-		//Find the user, non DB version.
-		findUsername(username, function(err,user) {
-			if (err) { return done(err); }
-			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
-			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
-		return done(null, user);
-		});
-	})
-);
 
 //Try out the new page
 app.get('/login', function(req, res){
