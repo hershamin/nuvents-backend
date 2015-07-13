@@ -49,7 +49,10 @@ app.get('/login', function(req, res){
 
 //Authenticate a user
 app.post('/login',
-  passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'})
+  passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login', failureFlash: true}),
+  function(req, res) {
+  res.redirect('/');
+  }
 );
 
 //Insure a logout
