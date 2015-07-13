@@ -56,10 +56,6 @@ passport.use(new LocalStrategy ({
 var httpServerIO = require('http').Server(app)
 var io = require('socket.io')(httpServerIO)
 
-app.listen(3000, function() {
-  console.log('Express server listening on port 3000');
-});
-
 // MongoDB
 var mongoConnURI = 'mongodb://root:K8pMpnMnLsqdU5WWTT9X@novus.modulusmongo.net:27017/xoJuda4z'
 var mongoose = require('mongoose')
@@ -81,11 +77,15 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-
-
 //Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Ensure the user is authenticated
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) { return next();}
+	res.render('/login');
+}
 
 // Routing Dependencies
 var deviceInit = require('./backend/deviceInitial.js');
@@ -97,8 +97,27 @@ var websiteWrite = require('./backend/websiteWrite.js'); // For website writing 
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
 var websiteRun = require('./backend/websiteRun.js'); // For website running requests
 
+//Login page
+app.get('/login', function(req, res, next) {
+  res.render('login', { user: req.user});
+});
+
+//Authenticate a user
+app.post('/login', function(req, res, next) {
+	passport.authenticate('local', function(err, user, info) {
+		if (err) {
+			return next(err)
+		}
+		if (!user) {
+			// return to login
+			return res.redirect('/login')
+		}
+		res.redirect('/updater')
+	})(req,res,next)
+});
+
 // Main page, render index.jade page
-app.get('/', function(req, res, next){ res.render('scrapers'); });
+app.get('/updater', function(req, res, next){ res.render('scrapers'); });
 
 // Serve information requests
 app.get('/website', websiteRead.allWebsites);
@@ -151,25 +170,6 @@ io.on('connection', function (socket) {
 	});
 
 });
-
-//Try out the new page
-app.get('/login', function(req, res){
-  res.render('logintest', { user: req.user});
-});
-
-//Authenticate a user
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login'},
-  function(req, res) {
-  res.redirect('/');
-  }
-));
-
-//Ensure the user is authenticated
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) { return next();}
-	res.render('/login');
-}
 
 //Insure a logout
 // app.get('/logout', function(req, res){
