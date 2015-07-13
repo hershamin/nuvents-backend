@@ -23,8 +23,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 //Initialize passport
-app.use(passport.initialize());
-app.use(app.router);
 
 // Misc express settings
 app.set('x-powered-by', false);
