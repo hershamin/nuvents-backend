@@ -61,8 +61,8 @@ function findUsername(username, us) {
 
 //Setup the Nuvents Strategy
 passport.use(new LocalStrategy ({
-		usernameField: username,
-		passwordField: password },
+		usernameField: 'username',
+		passwordField: 'password' },
 	
 		function(username, password, done) {
 
