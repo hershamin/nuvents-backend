@@ -8,10 +8,13 @@ html
 		title NuVents LogIn
 
 	body
-		div.wrapper
-			form.form-signup(action='/login', method='post')
+		br
+		brs
+		div.wrapper.row.container-fluid
+			form.form-signup.col-md-2.col-md-offset-5(action='/login', method='post')
 				h2.form-signup-heading Please login
 				input.form-control(type='text', name='username', placeholder='Username', required='', autofocus='')
 				input.form-control(type='password', name='password', placeholder='Password', required='')
-				button.btn.btn-lg.btn-primary.btn-block(type='submit') Log In
+				br
+				button.btn.btn-md.btn-primary.btn-block(type='submit') Log In &nbsp
 					i.fa.fa-sign-in
