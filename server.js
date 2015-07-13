@@ -8,7 +8,8 @@ var httpServerIO = require('http').Server(app)
 var io = require('socket.io')(httpServerIO)
 
 //Setup Passport Authentication
-var passport = require('passport')
+var flash = require('connect-flash')
+	, passport = require('passport')
 	, LocalStrategy = require('passport-local').Strategy;
 
 //Make some users
