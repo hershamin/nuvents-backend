@@ -145,14 +145,14 @@ app.get('/login', function(req, res){
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login'},
   function(req, res) {
-  res.redirect('/');
+  res.render('/');
   }
 ));
 
 //Ensure the user is authenticated
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next();}
-	res.redirect('/login');
+	res.render('/login');
 }
 
 //Insure a logout
