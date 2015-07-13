@@ -36,7 +36,7 @@ passport.use(new LocalStrategy (
 		findUsername(username, function(err,user) {
 			if (err) { return done(err); }
 			if (!user) {return done(null, false, { message: "Incorrect User" + username}); }
-			if (user.password != password) { return done(null, false, { message: 'Incorrect Password'}); }
+			if (user.password != password) { return done(null, false, { message: 'Incorrect Password', failureFlash: true}); }
 		return done(null, user);
 		});
 	})
@@ -48,18 +48,9 @@ app.get('/login', function(req, res){
 });
 
 //Authenticate a user
-app.post('/login', function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) {
-      return res.redirect('/login');
-    }
-    req.logIn(user, function(err) {
-      if (err) { return next(err); }
-      return res.redirect('/');
-    });
-  })(req, res, next);
-});
+app.post('/login',
+  passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'})
+);
 
 //Insure a logout
 // app.get('/logout', function(req, res){
