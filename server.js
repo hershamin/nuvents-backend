@@ -51,7 +51,7 @@ var users = [
 function findUsername(username, us) {
 	for (var i = 0, length = users.length; i < length; i++) {
 		var user = users[i];
-		if (user.username == username) {
+		if (user.username === username) {
 			return us(null, user);
 		}
 
