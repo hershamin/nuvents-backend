@@ -47,6 +47,31 @@ app.get('/login', function(req, res){
   res.render('logintest', { user: req.user});
 });
 
+//Authenticate a user
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) {
+      req.session.messages =  [info.message];
+      return res.redirect('/login');
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
+
+//Insure a logout
+// app.get('/logout', function(req, res){
+//   req.logout();
+//   res.redirect('/');
+// });
+
+app.listen(3000, function() {
+  console.log('Express server listening on port 3000');
+});
+
 // MongoDB
 var mongoConnURI = 'mongodb://root:K8pMpnMnLsqdU5WWTT9X@novus.modulusmongo.net:27017/xoJuda4z'
 var mongoose = require('mongoose')
