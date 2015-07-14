@@ -1,23 +1,7 @@
 // Dependencies
 var huntsman = require('huntsman')
-var jsEvaluator = require('eval')
 var writeEvents = require('./eventWrite.js');
-var moment = require('moment')
-
-// Google geocoding function
-function googleGeocoder(address) {
-	httpSync = require('httpsync')
-	var req = httpSync.request({
-		url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + address.replace(/\s/g,"+")
-	});
-	var res = JSON.parse(req.end().data)
-
-	if (res.results[0] == undefined) {
-		return undefined;
-	} else {
-		return res.results[0].geometry.location;
-	}
-}
+var scrapeWeb = require('./websiteScrape.js');
 
 // Run website, scrap website & add to DB
 exports.runWebsite = function(data, socket) {
@@ -67,114 +51,9 @@ exports.runWebsite = function(data, socket) {
 		eventDetail.wid = data.wid
 		eventDetail.website = res.uri
 		eventDetail.websiteName = data.websiteName
-		var jsEvalStr = ""
 
-		// collect variables from web page
-		for (var i=0; i<data.selectors.length; i++) {
-			// useful vars
-			htmlAttr = data.selectors[i].htmlAttr
-			selector = data.selectors[i].selector
-			variable = data.selectors[i].variable
-			array = data.selectors[i].array
-
-			// Turn variable into array if requested
-			var scrapedText;
-			if (array) {
-				arrEl = $(selector).toArray();
-				arrOut = []
-				for (var j=0; j<arrEl.length; j++) {
-					// Extract html attr. if requested
-					if (htmlAttr) {
-						arrOut[j] = $(arrEl[j]).attr(htmlAttr);
-					} else {
-						arrOut[j] = $(arrEl[j]).text().trim();
-					}
-				}
-				scrapedText = JSON.stringify(arrOut);
-			} else {
-				// Extract html attr. if requested
-				if (htmlAttr) {
-					scrapedText = $(selector).attr(htmlAttr);
-				} else {
-					scrapedText = $(selector).text().trim();
-				}
-			}
-
-			// Go to next iteration if nothing is returned
-			if (!scrapedText) {
-				jsEvalStr += 'var ' + variable + ' ="";'
-			} else {
-				scrapedText = scrapedText.replace(/"/g, '\\"') // Excape exclamation marks
-				scrapedText = scrapedText.replace(/\n/g, '') // Remove line feed
-				scrapedText = scrapedText.replace(/\r/g, '') // Remove return carriage
-				scrapedText = scrapedText.replace(/\t/g, '') // Remove tab character
-				jsEvalStr += 'var ' + variable + ' ="' + scrapedText + '";'
-				if (array) { jsEvalStr += variable + ' = JSON.parse(' + variable + ');' }
-			}
-
-		}
-
-		// process js string and collect output vars
-		rawProcessedObj = jsEvaluator(jsEvalStr + data.jsEval.replace(/\n/g,''))
-		outputVars = data.eventAttr.split(',')
-		for (var i=0; i<outputVars.length; i++) {
-			variable = outputVars[i].trim()
-			var processedText
-
-			if (rawProcessedObj[variable] == undefined) { continue } // Skip if undefined
-
-			// Collect vars and geocode if requested
-			if (rawProcessedObj[variable].geocode != undefined) { // Intent to geocode
-				textToGeocode = rawProcessedObj[variable].geocode.trim();
-				textToGeocode = textToGeocode.replace(/\s\s+/g, '');
-				geoText = googleGeocoder(textToGeocode)
-				if (geoText == undefined) { continue } // Skip if undefined
-				processedText = geoText.lat + ',' + geoText.lng
-			} else if (variable == 'time') { // Intent to use momentJS (http://momentjs.com/)
-				var timeRaw = []
-				if (Array.isArray(rawProcessedObj.time)) {
-					timeRaw = rawProcessedObj.time
-				} else {
-					timeRaw[0] = rawProcessedObj.time
-				}
-				var eventTS = [] // Event timestamps
-				currentTS = Date.now() / 1000 | 0 // Current timestamp in EPOCH
-				for (var j=0; j<timeRaw.length; j++) { // Iterate through acquired start and end times to get EPOCH timestamps
-					startRaw = timeRaw[j].start
-					endRaw = timeRaw[j].end
-					startM = moment(startRaw[0], startRaw[1])
-					startTS = Date.parse(startM._d.toString())/1000
-					var endM
-					if (endRaw.endOf != undefined) {
-						endM = startM.endOf(endRaw.endOf)
-					} else {
-						endM = startM.add(endRaw)
-					}
-					endTS = Date.parse(endM._d.toString())/1000
-					if (startTS > currentTS) { // Only add to DB if start time is in the future
-						eventTS.push({start: startTS, end: endTS})
-					}
-				}
-				processedText = JSON.stringify(eventTS)
-			} else {
-				processedText = rawProcessedObj[variable].trim()
-			}
-
-			// Send processed text via socket
-			if (processedText) {
-				if (variable == 'location') {
-					eventDetail.latitude = processedText.split(',')[0]
-					eventDetail.longitude = processedText.split(',')[1]
-				} else if (variable == 'categories') {
-					eventDetail.categories = processedText.split(',')
-				} else {
-					eventDetail[variable] = processedText
-				}
-			}
-		}
-
-		eventDetailTemp = JSON.stringify(eventDetail)
-		eventDetail = JSON.parse(eventDetailTemp)
+		eventDetail = scrapeWeb.scrape(data, null, eventDetail) // Scrape HTML
+		
 		writeStatus = writeEvents.addEvent(eventDetail, function (data) {
 			socket.emit('website:run:status', data);
 		});
