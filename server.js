@@ -149,6 +149,7 @@ app.delete('/website/:wid', ensureAuthenticated, websiteWrite.removeWebsite);
 
 // Read event requests to add city from DB
 app.get('/requests', ensureAuthenticated, eventReq.getEventRequests);
+app.get('/cityrequests', ensureAuthenticated, function(req, res, next){ res.render('cityRequests'); });
 
 // Real-time routing
 io.on('connection', function (socket) {
