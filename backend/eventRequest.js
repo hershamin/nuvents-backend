@@ -35,9 +35,10 @@ exports.addEventRequest = function (socket, data) {
 exports.getEventRequests = function (req, res) {
     // Send all request objects from DB
     Request.find({}, 'city state zip email name latlng did', function(err, requests) {
-        requests = requests.toObject()
         for (var i=0; i<requests.length; i++) {
-            delete requests[i]._id // Remove _id (object id) from all sent objects
+            var request = requests[i].toObject()
+            delete request._id // Remove _id (object id) from all sent objects
+            requests[i] = request
         }
         res.end(JSON.stringify(requests))
     });
