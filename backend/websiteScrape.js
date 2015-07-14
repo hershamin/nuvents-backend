@@ -18,7 +18,7 @@ function googleGeocoder(address) {
 }
 
 // Scrape website helper function
-exports.scrape = function(data, socket, eventDetail) {
+exports.scrape = function($, data, socket, eventDetail) {
 
 	var jsEvalStr = ""
 

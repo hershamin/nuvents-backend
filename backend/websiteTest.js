@@ -39,7 +39,7 @@ exports.testWebsite = function(data, socket) {
 		eventDetail.website = res.uri
 		eventDetail.websiteName = data.websiteName
 
-		eventDetail = scrapeWeb.scrape(data, socket, eventDetail) // Scrape HTML
+		eventDetail = scrapeWeb.scrape($, data, socket, eventDetail) // Scrape HTML
 
 	});
 

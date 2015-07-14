@@ -52,7 +52,7 @@ exports.runWebsite = function(data, socket) {
 		eventDetail.website = res.uri
 		eventDetail.websiteName = data.websiteName
 
-		eventDetail = scrapeWeb.scrape(data, null, eventDetail) // Scrape HTML
+		eventDetail = scrapeWeb.scrape($, data, null, eventDetail) // Scrape HTML
 		
 		writeStatus = writeEvents.addEvent(eventDetail, function (data) {
 			socket.emit('website:run:status', data);
