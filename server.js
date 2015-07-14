@@ -174,7 +174,7 @@ io.on('connection', function (socket) {
 
 	// Events request to add city
 	socket.on('event:request', function (data) {
-		eventReq.eventRequest(socket, data);
+		eventReq.addEventRequest(socket, data);
 	});
 
 	// Testing website scraper

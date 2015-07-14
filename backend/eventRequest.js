@@ -4,7 +4,7 @@ var Detail = require('../Schema/eventDetail.js')
 var Request = require('../Schema/eventRequest.js')
 
 // Event request to add city
-exports.eventRequest = function (socket, data) {
+exports.addEventRequest = function (socket, data) {
 	// Convert raw data string into json
 	var rawStr = data.replace('?','').replace(/\%20/g,' ').split('&')
 	var data = {}
@@ -29,5 +29,4 @@ exports.eventRequest = function (socket, data) {
     // Add to mongo DB
     var eventReq = new Request(data)
     eventReq.save(function(err, req) {})
-
 }
