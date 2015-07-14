@@ -93,6 +93,7 @@ app.use(passport.session());
 //Ensure the user is authenticated
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next();}
+	req.session.redirectTo = req.originalUrl; // Store last known url user requested
 	res.redirect('/login');
 }
 
@@ -123,7 +124,7 @@ app.post('/login', function(req, res, next) {
 		}
 		req.logIn(user, function(err){
 			if (err) { return next(err) }
-			return res.redirect('/updater')
+			return res.redirect(req.session.redirectTo) // Redirect to last known url user requested
 		})
 	})(req,res,next)
 });
