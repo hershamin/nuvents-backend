@@ -30,3 +30,15 @@ exports.addEventRequest = function (socket, data) {
     var eventReq = new Request(data)
     eventReq.save(function(err, req) {})
 }
+
+// Read all event request objects from DB
+exports.getEventRequests = function (req, res) {
+    // Send all request objects from DB
+    Request.find({}, 'city state zip email name latlng did', function(err, requests) {
+        requests = requests.toObject()
+        for (var i=0; i<requests.length; i++) {
+            delete requests[i]._id // Remove _id (object id) from all sent objects
+        }
+        res.end(JSON.stringify(requests))
+    });
+}
