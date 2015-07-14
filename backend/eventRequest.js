@@ -1,6 +1,7 @@
 ﻿// Dependencies
 var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
+var Request = require('../Schema/eventRequest.js')
 
 // Event request to add city
 exports.eventRequest = function (socket, data) {
@@ -20,5 +21,13 @@ exports.eventRequest = function (socket, data) {
     //	data.name: Name the user is providing in the text box
     //	data.latlng: Lat,Lng GPS coordinates
     //	data.did: Unique Device ID
+
+    // Add current EPOCH UTC timestamp to data
+    timeStamp = Date.now() / 1000 | 0
+    data.timestamp = timeStamp
+
+    // Add to mongo DB
+    var eventReq = new Request(data)
+    eventReq.save(function(err, req) {})
 
 }
