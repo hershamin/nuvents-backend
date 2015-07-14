@@ -92,8 +92,8 @@ app.use(passport.session());
 
 //Ensure the user is authenticated
 function ensureAuthenticated(req, res, next) {
-	req.session.redirectTo = req.originalUrl; // Store last known url user requested
 	if (req.isAuthenticated()) { return next();}
+	req.session.redirectTo = req.originalUrl; // Store last known url user requested
 	res.redirect('/login');
 }
 
