@@ -18,5 +18,7 @@ exports.eventRequest = function (socket, data) {
     //  data.zip: Postal code of that region
     //  data.email: User email to send when city is added to network
     //	data.name: Name the user is providing in the text box
+    //	data.latlng: Lat,Lng GPS coordinates
+    //	data.did: Unique Device ID
 
 }
