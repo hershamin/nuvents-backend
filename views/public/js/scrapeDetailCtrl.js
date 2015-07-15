@@ -105,7 +105,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 		socket.on('website:test:progress', function(data) { // Receive test data from server
 			$scope.$apply(function() {
 				if (data.substring(0,4) == 'http') {
-					$scope.testData += '<li class="list-group-item">' + data + '</li>'
+					$scope.testData += '<li class="list-group-item"><b>' + data + '</b></li>'
 				} else {
 					$scope.testData += '<li class="list-group-item">&nbsp&nbsp&nbsp&nbsp' + data + '</li>'
 				}
