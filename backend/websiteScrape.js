@@ -68,8 +68,12 @@ exports.scrape = function($, data, socket, eventDetail) {
 		} else {
 			scrapedText = scrapedText.replace(/"/g, '\\"') // Excape exclamation marks
 			scrapedText = scrapedText.replace(/\n/g, '') // Remove line feed
+			scrapedText = scrapedText.replace(/\\n/g, '') // Remove escaped line feed
 			scrapedText = scrapedText.replace(/\r/g, '') // Remove return carriage
+			scrapedText = scrapedText.replace(/\\r/g, '') // Remove escaped return carriage
 			scrapedText = scrapedText.replace(/\t/g, '') // Remove tab character
+			scrapedText = scrapedText.replace(/\\t/g, '') // Remove escaped tab character
+			scrapedText = scrapedText.replace(/\\\\/g, '\\') // Replace double escape character with single escape character
 			jsEvalStr += 'var ' + variable + ' ="' + scrapedText + '";'
 			if (array) { jsEvalStr += variable + ' = JSON.parse(' + variable + ');' }
 		}
