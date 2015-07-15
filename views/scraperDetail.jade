@@ -41,21 +41,25 @@ div.modal-body
 			label(for='selectorInput', class='col-sm-2 control-label') Selectors:
 			div.col-sm-10
 				div.text-center.row
-					div.col-sm-4
+					div.col-sm-3
 						label.control-label CSS Selector
 					div.col-sm-3
 						label.control-label HTML Attribute
 					div.col-sm-2
 						label.control-label Variable
 					div.col-sm-1
+						label.control-label HTML
+					div.col-sm-1
 						label.control-label Array
 				div.row(ng-repeat='selectItem in scraperDetail.selectors track by $index', ng-if='scraperDetail.selectors.length > 0')
-					div.col-sm-4(popover='{{selectItem.selector}}', popover-placement='bottom', popover-trigger='mouseenter')
+					div.col-sm-3(popover='{{selectItem.selector}}', popover-placement='bottom', popover-trigger='mouseenter')
 						input.form-control(type='text', ng-model='selectItem.selector', popover='CSS Selector for scraping data, eg. #evntDetail a.det small' ,popover-trigger='focus')
 					div.col-sm-3(popover='{{selectItem.htmlAttr}}', popover-placement='bottom', popover-trigger='mouseenter')
 						input.form-control(type='text', ng-model='selectItem.htmlAttr', popover='HTML attrbute for scraping, eg. "src" in <input src="..."></input>' ,popover-trigger='focus')
 					div.col-sm-2(popover='{{selectItem.variable}}', popover-placement='bottom', popover-trigger='mouseenter')
 						input.form-control(type='text', ng-model='selectItem.variable', popover='Variable to use when evaluating Javascript below' ,popover-trigger='focus')
+					div.col-sm-1
+						input.form-control(type='checkbox', ng-model='selectItem.html', popover='Choose whether to extract inner HTML from matched element(s)')
 					div.col-sm-1
 						input.form-control(type='checkbox', ng-model='selectItem.array', popover='Choose whether to turn all matched elements into array' ,popover-trigger='focus')
 					div.col-sm-2

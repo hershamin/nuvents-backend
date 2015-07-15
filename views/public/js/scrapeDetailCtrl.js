@@ -42,7 +42,8 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 			selector: "",
 			htmlAttr: "",
 			variable: "",
-			array: ""
+			array: "",
+			html: ""
 		}],
 		eventAttr: "",
 		jsEval: "",
@@ -83,7 +84,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 		if (field == 'hubURLs') {
 			$scope.scraperDetail.hubURL.splice(index + 1, 0, {url: ""});
 		} else if (field == 'selectors') {
-			$scope.scraperDetail.selectors.splice(index + 1, 0, {selector:"", htmlAttr:"", variable:"", array:false})
+			$scope.scraperDetail.selectors.splice(index + 1, 0, {selector:"", htmlAttr:"", variable:"", array:false, html:false})
 		}
 	}
 
