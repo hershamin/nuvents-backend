@@ -42,7 +42,12 @@ exports.scrape = function($, data, socket, eventDetail) {
 					arrOut[j] = $(arrEl[j]).attr(htmlAttr);
 				} else {
 					if (html) { // Extract inner html if requested
-						arrOut[j] = $(arrEl[j]).html().trim();
+						var temp = $(arrEl[j]).html();
+						if (temp) { // Trim only if html string is not null
+							arrOut[j] = temp.trim();
+						} else {
+							arrOut[j] = ""
+						}
 					} else {
 						arrOut[j] = $(arrEl[j]).text().trim();
 					}
@@ -55,7 +60,12 @@ exports.scrape = function($, data, socket, eventDetail) {
 				scrapedText = $(selector).attr(htmlAttr);
 			} else {
 				if (html) { // Extract inner html if requested
-					scrapedText = $(selector).html().trim();
+					var temp = $(arrEl[j]).html();
+					if (temp) { // Trim only if html string is not null
+						arrOut[j] = temp.trim();
+					} else {
+						arrOut[j] = ""
+					}
 				} else {
 					scrapedText = $(selector).text().trim();
 				}
