@@ -60,11 +60,11 @@ exports.scrape = function($, data, socket, eventDetail) {
 				scrapedText = $(selector).attr(htmlAttr);
 			} else {
 				if (html) { // Extract inner html if requested
-					var temp = $(arrEl[j]).html();
+					var temp = $(selector).html();
 					if (temp) { // Trim only if html string is not null
-						arrOut[j] = temp.trim();
+						scrapedText = temp.trim();
 					} else {
-						arrOut[j] = ""
+						scrapedText = ""
 					}
 				} else {
 					scrapedText = $(selector).text().trim();
