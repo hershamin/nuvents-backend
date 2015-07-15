@@ -29,6 +29,7 @@ exports.scrape = function($, data, socket, eventDetail) {
 		selector = data.selectors[i].selector
 		variable = data.selectors[i].variable
 		array = data.selectors[i].array
+		html = data.selectors[i].html
 
 		// Turn variable into array if requested
 		var scrapedText;
@@ -40,7 +41,11 @@ exports.scrape = function($, data, socket, eventDetail) {
 				if (htmlAttr) {
 					arrOut[j] = $(arrEl[j]).attr(htmlAttr);
 				} else {
-					arrOut[j] = $(arrEl[j]).text().trim();
+					if (html) { // Extract inner html if requested
+						arrOut[j] = $(arrEl[j]).html().trim();
+					} else {
+						arrOut[j] = $(arrEl[j]).text().trim();
+					}
 				}
 			}
 			scrapedText = JSON.stringify(arrOut);
@@ -49,7 +54,11 @@ exports.scrape = function($, data, socket, eventDetail) {
 			if (htmlAttr) {
 				scrapedText = $(selector).attr(htmlAttr);
 			} else {
-				scrapedText = $(selector).text().trim();
+				if (html) { // Extract inner html if requested
+					scrapedText = $(selector).html().trim();
+				} else {
+					scrapedText = $(selector).text().trim();
+				}
 			}
 		}
 
