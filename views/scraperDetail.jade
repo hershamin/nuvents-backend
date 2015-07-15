@@ -82,7 +82,7 @@ div.modal-body
 			label(for='eventIDs', class='col-sm-2 control-label') Event IDs:
 			div.col-sm-10
 				textarea.form-control(rows='2', disabled='true') {{scraperDetail.eid.join(' || ')}}
-	ul.list-group(ng-bind-html='testDataHtml')
+	ul.list-group(ng-bind-html='testDataHtml', style='height:300px; overflow:auto; resize:vertical; border:1px solid black;')
 
 div.modal-footer
 	button(class='btn btn-warning', ng-click='test()') Test
