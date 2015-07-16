@@ -1,6 +1,6 @@
 var myApp = angular.module('HeatmapApp', []);
 
-myApp.controller('HeatmapController', function($scope, $http) {
+myApp.controller('HeatmapController', [$scope, $http, function($scope, $http) {
 		// Fetch complete list from website
 		var response = $http.get('/requests');
 		response.success(function(res){
@@ -9,4 +9,4 @@ myApp.controller('HeatmapController', function($scope, $http) {
 		response.error(function(res){
 			alert("Failure: " + res);
 		});
-});
+}]);
