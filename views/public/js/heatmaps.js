@@ -1,6 +1,6 @@
-var myApp = angular.module('HeatmapApp', []);
+var app = angular.module('NuVents-Scraper');
 
-myApp.controller('HeatmapController', function($scope, $http) {
+app.controller('HeatmapController', function($scope, $http) {
 		// Fetch complete list from website
 		var response = $http.get('/requests');
 		response.success(function(res){
