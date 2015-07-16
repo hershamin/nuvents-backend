@@ -7,8 +7,10 @@ html
 	body(ng-app='HeatmapApp')
 		div.container-fluid(ng-controller='HeatmapController')
 		h1 Requests to find events near location...
+		h1 {{heatmap}}
 		li(ng-repeat="x in heatmap")
 		td {{x.latlng}}
+
 
 
 script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js')
