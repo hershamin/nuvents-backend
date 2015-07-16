@@ -1,12 +1,14 @@
 doctype html
 html
 	head
+		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css')
 		title City Requests
-	body(ng-app='Heatmap')
+	body(ng-app='HeatmapApp')
 		div.container-fluid(ng-controller='HeatmapController')
 		h1 Requests to find events near location...
-		li(ng-repeat="data in heatmap")
-		{{data.latlng}}
+		li(ng-repeat="x in heatmap")
+		td {{x.latlng}}
 
 
 script(src='js/heatmaps.js')

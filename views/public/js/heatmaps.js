@@ -1,8 +1,6 @@
-var app = angular.module('Heatmap', ['ui.bootstrap']);
+var app = angular.module('HeatmapApp', ['ui.bootstrap']);
 
 app.controller('HeatmapController', function($scope, $http) {
-	// Initialization function
-	var init = function() {
 		// Fetch complete list from website
 		var response = $http.get('/requests');
 		response.success(function(res){
@@ -11,6 +9,4 @@ app.controller('HeatmapController', function($scope, $http) {
 		response.error(function(res){
 			alert("Failure: " + res);
 		});
-	};
-	init();
 });
