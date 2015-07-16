@@ -7,7 +7,7 @@ html
 	body(ng-app='HeatmapApp')
 		div.container-fluid(ng-controller='HeatmapController')
 		h1 Requests to find events near location...
-		h1 {{heatmap}}
+		h1 {{heatmap.city}}
 		li(ng-repeat="x in heatmap")
 		td {{x.latlng}}
 
