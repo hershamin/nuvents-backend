@@ -123,6 +123,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 					$scope.testData += '<li class="list-group-item"><b style="color:#FF0000">Web crawler stopped...</b></li>'
 					$scope.testDataHtml = $sce.trustAsHtml($scope.testData)
 					$scope.detailUI.runBtn = true
+					socket.removeAllListeners(); // Avoid duplicate events
 				});
 			} else if (data.indexOf('added') > -1) { // Spider added event to DB
 				$scope.$apply(function() {
@@ -170,6 +171,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 					$scope.testData += '<li class="list-group-item"><b style="color:#FF0000">Web crawler stopped...</b></li>'
 					$scope.testDataHtml = $sce.trustAsHtml($scope.testData)
 					$scope.detailUI.runBtn = true
+					socket.removeAllListeners(); // Avoid duplicate events
 				});
 			} else if (data.indexOf('added') > -1) { // Spider added event to DB
 				$scope.$apply(function() {
