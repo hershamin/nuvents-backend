@@ -105,7 +105,8 @@ exports.scrape = function($, data, socket, eventDetail) {
 				if (endRaw.endOf != undefined) {
 					endM = startM.endOf(endRaw.endOf)
 				} else {
-					endM = startM.add(endRaw)
+					duration = moment.duration(endRaw)
+					endM = startM.add(duration)
 				}
 				endTS = Date.parse(endM._d.toString())/1000
 				if (startTS > currentTS) { // Only add to DB if start time is in the future
