@@ -12,7 +12,8 @@ var detailSchema = new Schema({
 		selector: String,
 		htmlAttr: String,
 		variable: String,
-		array: Boolean
+		array: Boolean,
+		html: Boolean
 	}],
 	eventAttr: String,
 	jsEval: String,

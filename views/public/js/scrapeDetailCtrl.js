@@ -23,6 +23,8 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 	var initWebTester = function() {
 		$scope.testDataHtml = $sce.trustAsHtml('<li class="list-group-item">' + $scope.detailUI.testPlaceholder + '</li>')
 		$scope.testData = ''
+		$scope.potentialEvents = 0
+		$scope.addedEvents = 0
 	}
 	initWebTester();
 
@@ -42,7 +44,8 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 			selector: "",
 			htmlAttr: "",
 			variable: "",
-			array: ""
+			array: "",
+			html: ""
 		}],
 		eventAttr: "",
 		jsEval: "",
@@ -83,7 +86,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 		if (field == 'hubURLs') {
 			$scope.scraperDetail.hubURL.splice(index + 1, 0, {url: ""});
 		} else if (field == 'selectors') {
-			$scope.scraperDetail.selectors.splice(index + 1, 0, {selector:"", htmlAttr:"", variable:"", array:false})
+			$scope.scraperDetail.selectors.splice(index + 1, 0, {selector:"", htmlAttr:"", variable:"", array:false, html:false})
 		}
 	}
 
@@ -104,7 +107,8 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 		socket.on('website:test:progress', function(data) { // Receive test data from server
 			$scope.$apply(function() {
 				if (data.substring(0,4) == 'http') {
-					$scope.testData += '<li class="list-group-item">' + data + '</li>'
+					$scope.testData += '<li class="list-group-item"><b>' + data + '</b></li>'
+					$scope.potentialEvents = $scope.potentialEvents + 1
 				} else {
 					$scope.testData += '<li class="list-group-item">&nbsp&nbsp&nbsp&nbsp' + data + '</li>'
 				}
@@ -177,6 +181,7 @@ app.controller('scrapeDetailCtrl', function($scope, $modalInstance, wid, $http, 
 				$scope.$apply(function() {
 					$scope.scraperDetail.eid.push(data.split(':')[1].trim())
 					$scope.detailUI.closeDetailBtn = false
+					$scope.addedEvents = $scope.addedEvents + 1
 				});
 			} else if (data.indexOf('deleted') > -1) { // Spider removed event from DB
 				$scope.$apply(function() {

@@ -29,6 +29,7 @@ exports.scrape = function($, data, socket, eventDetail) {
 		selector = data.selectors[i].selector
 		variable = data.selectors[i].variable
 		array = data.selectors[i].array
+		html = data.selectors[i].html
 
 		// Turn variable into array if requested
 		var scrapedText;
@@ -40,7 +41,16 @@ exports.scrape = function($, data, socket, eventDetail) {
 				if (htmlAttr) {
 					arrOut[j] = $(arrEl[j]).attr(htmlAttr);
 				} else {
-					arrOut[j] = $(arrEl[j]).text().trim();
+					if (html) { // Extract inner html if requested
+						var temp = $(arrEl[j]).html();
+						if (temp) { // Trim only if html string is not null
+							arrOut[j] = temp.trim().replace(/"/g,"'") // Replace double quotes with single quotes
+						} else {
+							arrOut[j] = ""
+						}
+					} else {
+						arrOut[j] = $(arrEl[j]).text().trim();
+					}
 				}
 			}
 			scrapedText = JSON.stringify(arrOut);
@@ -49,7 +59,16 @@ exports.scrape = function($, data, socket, eventDetail) {
 			if (htmlAttr) {
 				scrapedText = $(selector).attr(htmlAttr);
 			} else {
-				scrapedText = $(selector).text().trim();
+				if (html) { // Extract inner html if requested
+					var temp = $(selector).html();
+					if (temp) { // Trim only if html string is not null
+						scrapedText = temp.trim();
+					} else {
+						scrapedText = ""
+					}
+				} else {
+					scrapedText = $(selector).text().trim();
+				}
 			}
 		}
 
@@ -59,8 +78,12 @@ exports.scrape = function($, data, socket, eventDetail) {
 		} else {
 			scrapedText = scrapedText.replace(/"/g, '\\"') // Excape exclamation marks
 			scrapedText = scrapedText.replace(/\n/g, '') // Remove line feed
+			scrapedText = scrapedText.replace(/\\n/g, '') // Remove escaped line feed
 			scrapedText = scrapedText.replace(/\r/g, '') // Remove return carriage
+			scrapedText = scrapedText.replace(/\\r/g, '') // Remove escaped return carriage
 			scrapedText = scrapedText.replace(/\t/g, '') // Remove tab character
+			scrapedText = scrapedText.replace(/\\t/g, '') // Remove escaped tab character
+			scrapedText = scrapedText.replace(/\\\\/g, '\\') // Replace double escape character with single escape character
 			jsEvalStr += 'var ' + variable + ' ="' + scrapedText + '";'
 			if (array) { jsEvalStr += variable + ' = JSON.parse(' + variable + ');' }
 		}
