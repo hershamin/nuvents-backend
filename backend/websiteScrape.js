@@ -44,7 +44,7 @@ exports.scrape = function($, data, socket, eventDetail) {
 					if (html) { // Extract inner html if requested
 						var temp = $(arrEl[j]).html();
 						if (temp) { // Trim only if html string is not null
-							arrOut[j] = temp.trim();
+							arrOut[j] = temp.trim().replace(/"/g,"'") // Replace double quotes with single quotes
 						} else {
 							arrOut[j] = ""
 						}
