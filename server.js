@@ -102,6 +102,7 @@ var deviceInit = require('./backend/deviceInitial.js');
 var readEvents = require('./backend/eventRead.js');
 var eventWeb = require('./backend/eventWebsite.js');
 var eventReq = require('./backend/eventRequest.js');
+var eventCity = require('./backend/eventCity.js');
 var websiteRead = require('./backend/websiteRead.js'); // For website information requests
 var websiteWrite = require('./backend/websiteWrite.js'); // For website writing requests
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
@@ -150,6 +151,9 @@ app.delete('/website/:wid', ensureAuthenticated, websiteWrite.removeWebsite);
 // Read event requests to add city from DB
 app.get('/requests', ensureAuthenticated, eventReq.getEventRequests);
 app.get('/cityrequests', ensureAuthenticated, function(req, res, next){ res.render('cityRequests'); });
+
+// Read event city requests to send existing cities from DB
+app.get('/cities', eventCity.getExistingCities);
 
 // Real-time routing
 io.on('connection', function (socket) {
