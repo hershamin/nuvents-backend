@@ -6,9 +6,12 @@ var Request = require('../Schema/eventRequest.js')
 // Read all available cities from DB
 exports.getExistingCities = function (req, res) {
     // Send all available cities to user
-    
+
     var cities = [
-        "Austin, TX"
+        {
+            name: "Austin, TX (Downtown)",
+            location: "30.27,-97.74"
+        }
     ]
 
     res.end(JSON.stringify(cities))
