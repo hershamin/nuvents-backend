@@ -16,12 +16,11 @@ xmlhttp.send();
 var latlng = [];
 
 function heatmapFunction(arr) {
-for (var i = 0; i < arr.length; i++) {
-        var lat = (parseFloat(arr[i].latlng.split(',')[0]));
-        var lng = (parseFloat(arr[i].latlng.split(',')[1]));
-        latlng.push(new google.maps.LatLng(lat,lng));
-        }
-        console.log(latlng);
+  for (var i = 0; i < arr.length; i++) {
+    var lat = (parseFloat(arr[i].latlng.split(',')[0]));
+    var lng = (parseFloat(arr[i].latlng.split(',')[1]));
+    latlng.push(new google.maps.LatLng(lat,lng));
+  }
 }
 
 //Initialize the map, add the center, and display the data points on the map.
