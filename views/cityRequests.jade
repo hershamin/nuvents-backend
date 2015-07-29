@@ -1,17 +1,14 @@
-
-script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js')
-script(src='js/main.js')
-
 doctype html
 html
-	head
-		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
-		link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css')
-		title City Requests
-	body
-		div.container-fluid(ng-controller='HeatmapController')
-		h1 Requests to find events near location...
-		h1 {{heatmap.city}}
-		li(ng-repeat="x in heatmap")
-		td {{x.latlng}}
-
+  head
+    meta(charset='utf-8')
+    link(rel='stylesheet' href='css/heatmap.css')
+  body
+    #panel
+      button(onclick='toggleHeatmap()') Toggle Heatmap
+      button(onclick='changeGradient()') Change gradient
+      button(onclick='changeRadius()') Change radius
+      button(onclick='changeOpacity()') Change opacity
+    #map-canvas
+    script(src='https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=visualization')
+    script(src='js/heatmapDisplay.js')
