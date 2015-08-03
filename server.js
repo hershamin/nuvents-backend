@@ -159,8 +159,8 @@ app.get('/cities', eventCity.getExistingCities);
 io.on('connection', function (socket) {
 
 	// Updating client on resources
-	socket.on('device:initial', function (data) {
-		deviceInit.sendResources(socket, data);
+	socket.on('resources', function (data, callback) {
+		deviceInit.sendResources(socket, data, callback);
 	});
 
 	// Routing event requests from client

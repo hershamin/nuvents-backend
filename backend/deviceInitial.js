@@ -1,5 +1,5 @@
 // Send device resources manifest as JSON
-exports.sendResources = function(socket, data) {
+exports.sendResources = function(socket, data, callback) {
 	// Get Device ID (did) and Device Model (dm)
 	//	Data is sent back using "resources" or "resources:status" event
 
@@ -9,7 +9,7 @@ exports.sendResources = function(socket, data) {
     } catch (e) {}
 
 	if (data.did == undefined || data.dm == undefined) { // Insufficient information
-		socket.emit("resources:status", "Error getting resources: device ID and/or device Model not specified");
+		callback("Error getting resources: device ID and/or device Model not specified");
 		return;
 	}
 
@@ -55,5 +55,5 @@ exports.sendResources = function(socket, data) {
 		}
 	}
 
-	socket.emit("resources", JSON.stringify(toSend)); // Send resources to client
+	callback(JSON.stringify(toSend)); // Send resources to client
 }
