@@ -1,4 +1,28 @@
 {
-  "md5sum": {},
-  "resource": {}
+  "md5sum": {
+  	"categoryIcon" : {
+  		"charity" : "86f39b2d9a78748d4c31f5f7ed5aa8b5",
+  		"conference" : "3a03d2150ba05f6f9982e7664848c51d",
+  		"food" : "7691f53d201df0cd763f59b390154aa1",
+  		"games" : "ab772686e042d65a6be52532ca3944b8",
+  		"music" : "9e23398c1a0d7210a194eaface869013",
+  		"productLaunch" : "22dc69e7ff9bd188b393a79985669d70",
+  		"singles" : "604bcf93d227a75b4e8de39cd8f116ec",
+  		"sports" : "d1a231e88e31a11c2fa11a98bad43584",
+  		"tech" : "cd28219d757656d67b4eb03b4756c544"
+  	}
+  },
+  "resource": {
+  	"categoryIcon" : {
+  		"charity" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/charity.png",
+  		"conference" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/conference.png",
+  		"food" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/food.png",
+  		"games" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/games.png",
+  		"music" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/music.png",
+  		"productLaunch" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/productLaunch.png",
+  		"singles" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/singles.png",
+  		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/sports.png",
+  		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/tech.png"
+  	}
+  }
 }
