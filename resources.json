@@ -10,6 +10,39 @@
   		"singles" : "604bcf93d227a75b4e8de39cd8f116ec",
   		"sports" : "d1a231e88e31a11c2fa11a98bad43584",
   		"tech" : "cd28219d757656d67b4eb03b4756c544"
+  	},
+  	"mapMarkerLow" : {
+  		"charity" : "25ffb303405f7ff3c90968d057380a6a",
+  		"conference" : "d0d83fd93083d1fda97949e495d87c13",
+  		"food" : "8928eeb28cab10f83b5dbf9cbba1af36",
+  		"games" : "b72756654dad334f2ab85a57f81ccbdd",
+  		"music" : "2f7d98a378d89f7ef565440682d7f2f4",
+  		"productLaunch" : "d7fa6de48b3f8488dc92489f5c34897e",
+  		"singles" : "be498f507a7992588b0e054883d39087",
+  		"sports" : "8211460d7373af4ec5345d4e4756ee78",
+  		"tech" : "dae58a8a0b21fda0b8dbd2e3f5f93e57"
+  	},
+  	"mapMarkerMedium" : {
+  		"charity" : "908dcb6782b68754bf4c9ce7f393b8d4",
+  		"conference" : "df13bfc683ffdbbe853313e4da770687",
+  		"food" : "d985a2830ca29d9f3dd97e1689a7192b",
+  		"games" : "6b70a246f5c3b6bce0dad2fc9c88160a",
+  		"music" : "9840c533e570966cda6dca62eb22fa8e",
+  		"productLaunch" : "b6a9347a250ad4aea7a65273257c7ab0",
+  		"singles" : "cbcc4684dc825a883bc8df3ea436d835",
+  		"sports" : "9dae4e88c2bfa32b5dd9c4d3e3ff0eee",
+  		"tech" : "ffff1ed1dcc205acdbfdcc0ed6a8a676"
+  	},
+  	"mapMarkerHigh" : {
+  		"charity" : "23152acae1e38d37905e9cf279c67b64",
+  		"conference" : "53fac793ab02b728e928e817a95b982c",
+  		"food" : "5a3f2bb6f3c69c63a01bda08d42d05d5",
+  		"games" : "c5d419197c7fc8c8278b7a71ec3d8788",
+  		"music" : "669ac41afa96b5befa130b5b5c54b896",
+  		"productLaunch" : "6dfdc1305d9e2cd4bcaf513f125f5693",
+  		"singles" : "e02301f633a112b4f3cce8a14ee557a5",
+  		"sports" : "af42c4ed60e685c5b634b71292dcc64b",
+  		"tech" : "ae04700cb9cb6f4515fd04281075a331"
   	}
   },
   "resource": {
@@ -23,6 +56,39 @@
   		"singles" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/singles.png",
   		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/sports.png",
   		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/tech.png"
+  	},
+  	"mapMarkerLow" : {
+  		"charity" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/charityLow.png",
+  		"conference" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/conferenceLow.png",
+  		"food" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/foodLow.png",
+  		"games" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/gamesLow.png",
+  		"music" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/musicLow.png",
+  		"productLaunch" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/productLaunchLow.png",
+  		"singles" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/singlesLow.png",
+  		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/sportsLow.png",
+  		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/techLow.png"
+  	},
+  	"mapMarkerMedium" : {
+  		"charity" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/charityMed.png",
+  		"conference" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/conferenceMed.png",
+  		"food" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/foodMed.png",
+  		"games" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/gamesMed.png",
+  		"music" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/musicMed.png",
+  		"productLaunch" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/productLaunchMed.png",
+  		"singles" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/singlesMed.png",
+  		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/sportsMed.png",
+  		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/techMed.png"
+  	},
+  	"mapMarkerHigh" : {
+  		"charity" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/charityHigh.png",
+  		"conference" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/conferenceHigh.png",
+  		"food" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/foodHigh.png",
+  		"games" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/gamesHigh.png",
+  		"music" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/musicHigh.png",
+  		"productLaunch" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/productLaunchHigh.png",
+  		"singles" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/singlesHigh.png",
+  		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/sportsHigh.png",
+  		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/techHigh.png"
   	}
   }
 }
