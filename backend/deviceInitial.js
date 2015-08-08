@@ -15,7 +15,7 @@ exports.sendResources = function(socket, data, callback) {
 
 	// Read JSON from file
 	var fs = require('fs')
-	var jsonStr = fs.readFile('./resources.json', 'utf8');
+	var jsonStr = fs.readFileSync('./resources.json', 'utf8');
 	callback(jsonStr)
 
 }
