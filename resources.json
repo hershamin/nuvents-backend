@@ -54,6 +54,9 @@
   		"singles" : "e02301f633a112b4f3cce8a14ee557a5",
   		"sports" : "af42c4ed60e685c5b634b71292dcc64b",
   		"tech" : "ae04700cb9cb6f4515fd04281075a331"
+  	},
+  	"misc" : {
+  	    "categoryNames" : "2adb13d0bbbe50bd149befeb82c69251"
   	}
   },
   "resource": {
@@ -111,6 +114,9 @@
   		"singles" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/singlesHigh.png",
   		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/sportsHigh.png",
   		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/techHigh.png"
+  	},
+  	"misc" : {
+  	    "categoryNames" : "http://storage.googleapis.com/nuvents-resources/v2/categoryNames.json"
   	}
   }
 }
