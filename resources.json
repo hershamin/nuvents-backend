@@ -11,6 +11,17 @@
   		"sports" : "d1a231e88e31a11c2fa11a98bad43584",
   		"tech" : "cd28219d757656d67b4eb03b4756c544"
   	},
+    "categoryIconHighlighted" : {
+      "charity" : "fba4e9c1ddf88764d3a1993a352c162d",
+      "conference" : "b3d51636fbd84a281ca2684179710853",
+      "food" : "cf939cf2190fbb7db358097f31533729",
+      "games" : "e1358bf506a2ad5c99c6fd1d0a6ef7f9",
+      "music" : "2c37b385816851689e7b16b59d684c61",
+      "productLaunch" : "ad30b01d2cb094fd28393ced704f601f",
+      "singles" : "b7eec7b52a509f316ce1824ea532235d",
+      "sports" : "d926fa423e1c47563001a0e04fe2c13b",
+      "tech" : "4c66e0e5ff8d53d1b209414f627baef6"
+    },
   	"mapMarkerLow" : {
   		"charity" : "25ffb303405f7ff3c90968d057380a6a",
   		"conference" : "d0d83fd93083d1fda97949e495d87c13",
@@ -57,6 +68,17 @@
   		"sports" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/sports.png",
   		"tech" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/tech.png"
   	},
+    "categoryIconHighlighted" : {
+      "charity" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/charityHighlighted.png",
+      "conference" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/conferenceHighlighted.png",
+      "food" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/foodHighlighted.png",
+      "games" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/gamesHighlighted.png",
+      "music" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/musicHighlighted.png",
+      "productLaunch" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/productLaunchHighlighted.png",
+      "singles" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/singlesHighlighted.png",
+      "sports" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/sportsHighlighted.png",
+      "tech" : "http://storage.googleapis.com/nuvents-resources/v2/categoryMarkers/techHighlighted.png"
+    },
   	"mapMarkerLow" : {
   		"charity" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/charityLow.png",
   		"conference" : "http://storage.googleapis.com/nuvents-resources/v2/mapMarkers/conferenceLow.png",
