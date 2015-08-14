@@ -9,6 +9,7 @@ var summarySchema = new Schema({
 	wid: {type:String, required:true},
 	marker: {type:String, default:'default'},
 	media: {type:String, required:true},
+	website: {type:String, required:true},
 	websiteName: {type:String, required:true}
 });
 

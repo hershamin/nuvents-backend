@@ -9,7 +9,7 @@ exports.addEvent = function (data, callback) {
     // Summary, then Details
     var summary = new Summary({title: data.title, latitude: parseFloat(data.latitude),
                         longitude: parseFloat(data.longitude), time: JSON.parse(data.time),
-                        marker: data.marker, wid: data.wid, media: data.media,
+                        marker: data.marker, wid: data.wid, media: data.media, website: data.website,
                         websiteName: data.websiteName})
     summary.save(function(err, summary) {
         if (err) { // bad request
