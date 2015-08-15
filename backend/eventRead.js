@@ -31,7 +31,7 @@ exports.findNearbyEvents = function (socket, data) {
 
     timeStamp = Math.round(parseFloat(timeS)) // Round timestamp and convert to number
     
-    maxDist = parseFloat(radS) / 6371 // Convert distance to radians using radius of earth in km
+    maxDist = (parseFloat(radS)/1000) / 111.12 // Convert distance to degrees using some multiplier
     coords = [parseFloat(lngS), parseFloat(latS)] // Center coordinates
         
     // Query and Send to client
