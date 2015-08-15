@@ -3,7 +3,7 @@ var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
 var WebsiteDetail = require('../Schema/websiteDetail.js')
 
-// Nearby Events
+// Add Event to DB
 exports.addEvent = function (data, callback) {
     // Add event to database, includes event summary & event detail
     
@@ -49,7 +49,7 @@ exports.addEvent = function (data, callback) {
 
 }
 
-// Event Details
+// Remove Event from DB
 exports.removeEvent = function (data) {
     // Get event ID or website ID from request
     // remove event from database
