@@ -64,7 +64,7 @@ exports.findNearbyEvents = function (socket, data) {
     // Queries to accomplish: lat2 < lat4, lng2 > lng4
         
     // Query and Send to client
-    var summStream = Summary.where('latitude').gt(lat2).lt(lat4).where('longitude').gt(lng4).lt(lng2).select('title latitude longitude date eid marker time media websiteName').lean().stream();
+    var summStream = Summary.where('latitude').gt(lat2).lt(lat4).where('longitude').gt(lng4).lt(lng2).select('title latitude longitude date eid wid marker time media websiteName').lean().stream();
 
     summStream.on('data', function (doc) {
         doc.eid = doc._id
