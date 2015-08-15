@@ -8,8 +8,8 @@ exports.addEvent = function (data, callback) {
     // Add event to database, includes event summary & event detail
     
     // Summary, then Details
-    var summary = new Summary({title: data.title, latitude: parseFloat(data.latitude),
-                        longitude: parseFloat(data.longitude), time: JSON.parse(data.time),
+    var summary = new Summary({title: data.title, location: [parseFloat(data.longitude),
+                        parseFloat(data.latitude)], time: JSON.parse(data.time),
                         marker: data.marker, wid: data.wid, media: data.media, website: data.website,
                         websiteName: data.websiteName})
     summary.save(function(err, summary) {
