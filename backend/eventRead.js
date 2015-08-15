@@ -31,40 +31,11 @@ exports.findNearbyEvents = function (socket, data) {
 
     timeStamp = Math.round(parseFloat(timeS)) // Round timestamp and convert to number
     
-    // Get GPS points from all corners
-    /*
-     *     2 *     * 1
-     *     
-     *          * Given Lat, Lng
-     *     
-     *     3 *     * 4
-     */
-
-    var dist = parseFloat(radS) * Math.sqrt(2) * 1/1000; // Distance in Km
-    var brg2 = (45 + 90) * Math.PI/180;
-    var brg4 = (45 + 90 + 90 + 90) * Math.PI/180;
-    var RadE = 6371.0 // Radius of the earth in Km
-    var latGR = parseFloat(latS) * Math.PI/180;
-    var lngGR = parseFloat(lngS) * Math.PI/180;
-    var lat2R = Math.asin(Math.sin(latGR) * Math.cos(dist/RadE) + 
-                    Math.cos(latGR) * Math.sin(dist/RadE) * Math.cos(brg2));
-    var lng2R = lngGR + Math.atan2(Math.sin(brg2) * Math.sin(dist/RadE) *
-                    Math.cos(latGR), Math.cos(dist/RadE) - Math.sin(latGR) * Math.sin(lat2R));
-    var lat4R = Math.asin(Math.sin(latGR) * Math.cos(dist/RadE) +
-                    Math.cos(latGR) * Math.sin(dist/RadE) * Math.cos(brg4));
-    var lng4R = lngGR + Math.atan2(Math.sin(brg4) * Math.sin(dist/RadE) * 
-                    Math.cos(latGR), Math.cos(dist/RadE) - Math.sin(latGR) * Math.sin(lat4R));
-
-    var lat2 = lat2R * 180/Math.PI;
-    var lng2 = lng2R * 180/Math.PI;
-    var lat4 = lat4R * 180/Math.PI;
-    var lng4 = lng4R * 180/Math.PI;
-
-
-    // Queries to accomplish: lat2 < lat4, lng2 > lng4
+    maxDist = (parseFloat(radS)/1000) / 6371 // Convert distance to radians using radius of earth in km
+    coords = [parseFloat(lngS), parseFloat(latS)] // Center coordinates
         
     // Query and Send to client
-    var summStream = Summary.where('latitude').gt(lat2).lt(lat4).where('longitude').gt(lng4).lt(lng2).select('title latitude longitude date eid wid marker time media websiteName').lean().stream();
+    var summStream = Summary.find({location:{$near:coords, $maxDistance:maxDist}}).select('title location eid wid marker time media websiteName').lean().stream();
 
     summStream.on('data', function (doc) {
         doc.eid = doc._id
