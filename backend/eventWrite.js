@@ -1,6 +1,7 @@
 ﻿// Dependencies
 var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
+var WebsiteDetail = require('../Schema/websiteDetail.js')
 
 // Nearby Events
 exports.addEvent = function (data, callback) {
@@ -56,32 +57,22 @@ exports.removeEvent = function (data) {
     //   wid : Unique Website ID
     //          ID of the website used to get event info
 
-    if (data.eid == undefined && data.wid == undefined) { // no EID or WID found
+    if (data.eid == undefined || data.wid == undefined) { // no EID or WID found
         return
     }
 
-    var eventRemoveReq = {}
-    var widRemoval = true
-    if (data.wid != undefined) { // Remove events with Website ID requested
-        eventRemoveReq.wid = data.wid
-        widRemoval = true
-    } else { // Remove event with eventID
-        eventRemoveReq._id = data.eid
-        widRemoval = false
-    }
-
-    Summary.remove(eventRemoveReq, function(err) {
+    // Remove event summary
+    Summary.remove({_id: data.eid, wid: data.wid}, function(err) {
         if (err) { // Error deleting event summary
             return
         } else {
-            if (!widRemoval) { // Remove event detail using EID instead of WID
-                eventRemoveReq.eid = data.eid
-                delete eventRemoveReq._id
-            }
-            Detail.remove(eventRemoveReq, function(err) {
+            // Remove event detail
+            Detail.remove({eid: data.eid, wid: data.wid}, function(err) {
                 if (err) { // Error deleting event detail
                     return
                 } else {
+                    // Remove record from website detail
+                    WebsiteDetail.update({wid: data.wid}, {$pull:{eid: data.eid}})
                     return
                 }
             });
