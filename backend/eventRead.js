@@ -82,14 +82,13 @@ exports.findNearbyEvents = function (socket, data) {
                 socket.emit('event:nearby', JSON.stringify(doc));
                 toRemove = false
                 break;
-            } else {
-                // TODO: Trigger event sync
             }
         }
         // Remove event if dates are in the past
         if (toRemove) {
             var removeData = {wid: doc.wid , eid: doc.eid}
             EventWrite.removeEvent(removeData)
+            // TODO: trigger event sync from this particular source website (WID)
         }
     });
 
