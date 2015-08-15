@@ -3,8 +3,11 @@ var Schema = mongoose.Schema
 
 var summarySchema = new Schema({
 	title: {type:String, required:true},
-	latitude: {type:Number, required:true},
-	longitude: {type:Number, required:true},
+	location: {
+		type: [Number],	// [<longitude>, <latitude>]
+		index: '2d',	// create the geospatial index
+		required: true
+	},
 	time: [{start:Number, end:Number}],
 	wid: {type:String, required:true},
 	marker: {type:String, default:'default'},
