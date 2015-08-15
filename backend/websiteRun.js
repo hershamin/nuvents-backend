@@ -8,18 +8,6 @@ exports.runWebsite = function(data, socket) {
 	// data : JSON data regarding the scraper to test
 	// socket : Web socket object involved with this connection
 
-	// Delete previously stored events from this website
-	for (var i=0; i<data.eid.length; i++) {
-		writeEvents.removeEvent({eid:data.eid[i]}, function (data) {
-			socket.emit('website:run:status', data)
-		});
-	}
-
-	// Delete previously stored events using website id
-	widDelStatus = writeEvents.removeEvent({wid:data.wid}, function (data) {
-		socket.emit('website:run:status', data)
-	});
-
 	var spider = huntsman.spider()
 
 	// Huntsman spider dependencies

@@ -49,7 +49,7 @@ exports.addEvent = function (data, callback) {
 }
 
 // Event Details
-exports.removeEvent = function (data, callback) {
+exports.removeEvent = function (data) {
     // Get event ID or website ID from request
     // remove event from database
     //   eid : Unique event ID
@@ -57,7 +57,7 @@ exports.removeEvent = function (data, callback) {
     //          ID of the website used to get event info
 
     if (data.eid == undefined && data.wid == undefined) { // no EID or WID found
-        callback('Error deleting event: no eid or wid specified')
+        return
     }
 
     var eventRemoveReq = {}
@@ -72,7 +72,7 @@ exports.removeEvent = function (data, callback) {
 
     Summary.remove(eventRemoveReq, function(err) {
         if (err) { // Error deleting event summary
-            callback('Error deleting event(s): ' + err.message)
+            return
         } else {
             if (!widRemoval) { // Remove event detail using EID instead of WID
                 eventRemoveReq.eid = data.eid
@@ -80,9 +80,9 @@ exports.removeEvent = function (data, callback) {
             }
             Detail.remove(eventRemoveReq, function(err) {
                 if (err) { // Error deleting event detail
-                    callback('Error deleting event(s): ' + err.message)
+                    return
                 } else {
-                    callback('Event deleted(s): ' + data.eid)
+                    return
                 }
             });
         }
