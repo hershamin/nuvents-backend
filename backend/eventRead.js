@@ -40,6 +40,10 @@ exports.findNearbyEvents = function (socket, data) {
     summStream.on('data', function (doc) {
         doc.eid = doc._id
         delete doc._id
+        // Split location into latitude & longitude
+        doc.latitude = doc.location[1]
+        doc.longitude = doc.location[0]
+        delete doc.location
         // Only send if the event is a future event
         var times = doc.time
         // Sort 'times' array by start time
