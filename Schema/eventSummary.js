@@ -1,6 +1,12 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
+// Time sub schema, prevent _id from being created
+var timeSubSchema = new Schema({
+	start:Number,
+	end:Number
+}, {_id:false});
+
 var summarySchema = new Schema({
 	title: {type:String, required:true},
 	location: {
@@ -8,7 +14,7 @@ var summarySchema = new Schema({
 		index: '2d',	// create the geospatial index
 		required: true
 	},
-	time: [{start:Number, end:Number}],
+	time: [timeSubSchema],
 	wid: {type:String, required:true},
 	marker: {type:String, default:'default'},
 	media: {type:String, required:true},
