@@ -1,6 +1,7 @@
 ﻿// Dependencies
 var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
+var EventWrite = require('../backend/eventWrite.js')
 
 // Nearby Events
 exports.findNearbyEvents = function (socket, data) {
@@ -74,14 +75,21 @@ exports.findNearbyEvents = function (socket, data) {
         times.sort(function (a,b) {
             return parseFloat(a.start) - parseFloat(b.start)
         })
+        var toRemove = true
         for (var i=0; i<times.length; i++) {
             if (parseFloat(times[i].start) > parseFloat(timeStamp)) { // Compare EPOCH times
                 doc.time = times[i]
                 socket.emit('event:nearby', JSON.stringify(doc));
+                toRemove = false
                 break;
             } else {
                 // TODO: Trigger event sync
             }
+        }
+        // Remove event if dates are in the past
+        if (toRemove) {
+            var removeData = {wid: doc.wid , eid: doc.eid}
+            EventWrite.removeEvent(removeData)
         }
     });
 
