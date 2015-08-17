@@ -23,37 +23,37 @@
       "tech" : "de758ff3dd2c85246cf1e74d31e454ba"
     },
   	"mapMarkerLow" : {
-  		"charity" : "25ffb303405f7ff3c90968d057380a6a",
-  		"conference" : "d0d83fd93083d1fda97949e495d87c13",
-  		"food" : "8928eeb28cab10f83b5dbf9cbba1af36",
-  		"games" : "b72756654dad334f2ab85a57f81ccbdd",
-  		"music" : "2f7d98a378d89f7ef565440682d7f2f4",
-  		"productLaunch" : "d7fa6de48b3f8488dc92489f5c34897e",
-  		"singles" : "be498f507a7992588b0e054883d39087",
-  		"sports" : "8211460d7373af4ec5345d4e4756ee78",
-  		"tech" : "dae58a8a0b21fda0b8dbd2e3f5f93e57"
+  		"charity" : "eae0bc6edc28d4ce2d7d526a6b832a21",
+  		"conference" : "16337e3f402a99e8ff6b292a098a72db",
+  		"food" : "cd8d97bbf77b2adfe51c1cefc00409a9",
+  		"games" : "558219efb1e223c3a862389004c6abcf",
+  		"music" : "36de62871b8499e59c6a93814a9904b6",
+  		"productLaunch" : "7a3fbfe06db681ebb5a035114c924dea",
+  		"singles" : "77dcd30c6d500d7363e74de7eb0baab3",
+  		"sports" : "007e8d705f8e73e26907ce9985defcac",
+  		"tech" : "0a481fb8bf990bb9564bdb2c0c78af7f"
   	},
   	"mapMarkerMedium" : {
-  		"charity" : "908dcb6782b68754bf4c9ce7f393b8d4",
-  		"conference" : "df13bfc683ffdbbe853313e4da770687",
-  		"food" : "d985a2830ca29d9f3dd97e1689a7192b",
-  		"games" : "6b70a246f5c3b6bce0dad2fc9c88160a",
-  		"music" : "9840c533e570966cda6dca62eb22fa8e",
-  		"productLaunch" : "b6a9347a250ad4aea7a65273257c7ab0",
-  		"singles" : "cbcc4684dc825a883bc8df3ea436d835",
-  		"sports" : "9dae4e88c2bfa32b5dd9c4d3e3ff0eee",
-  		"tech" : "ffff1ed1dcc205acdbfdcc0ed6a8a676"
+  		"charity" : "9745666ac1eeee274363b57d610c87aa",
+  		"conference" : "995a2ce333248e06e64e559eb5338c40",
+  		"food" : "7fc9365c75c58bbff69ad0a3bc9c2ccd",
+  		"games" : "32f1df6062d6ae7a4c23680ea157277b",
+  		"music" : "def59fe7a5e88249546fd897e089d179",
+  		"productLaunch" : "52b0863e4a7b08f46bea00aad507f7bc",
+  		"singles" : "0426ae17723e9029269a68ed765210e7",
+  		"sports" : "7b1139ce1147635ad8980818a7b17ea0",
+  		"tech" : "7a962073e7c28f6149075ff98626ae90"
   	},
   	"mapMarkerHigh" : {
-  		"charity" : "23152acae1e38d37905e9cf279c67b64",
-  		"conference" : "53fac793ab02b728e928e817a95b982c",
-  		"food" : "5a3f2bb6f3c69c63a01bda08d42d05d5",
-  		"games" : "c5d419197c7fc8c8278b7a71ec3d8788",
-  		"music" : "669ac41afa96b5befa130b5b5c54b896",
-  		"productLaunch" : "6dfdc1305d9e2cd4bcaf513f125f5693",
-  		"singles" : "e02301f633a112b4f3cce8a14ee557a5",
-  		"sports" : "af42c4ed60e685c5b634b71292dcc64b",
-  		"tech" : "ae04700cb9cb6f4515fd04281075a331"
+  		"charity" : "bb2ca369be3587aedfd26e337c5a7e5f",
+  		"conference" : "fadbb7475141f5935f2d998849586a26",
+  		"food" : "dc19bdadbe8e681d2521b751d0385ac0",
+  		"games" : "e29f0bc545356f9436956141ca09d8fe",
+  		"music" : "2f16bc58955cb5ef6e6835c1d4fa07cf",
+  		"productLaunch" : "9d3f71559357a4a21c9e58cb55472d88",
+  		"singles" : "c0f4b9ac52ec5c3d2de58cb807b04c5b",
+  		"sports" : "f9893585cfc93df497dfceaab8470b76",
+  		"tech" : "2bb47bb39bf1cdd8923209f0ed9f6c20"
   	},
   	"misc" : {
   	    "categoryNames" : "2adb13d0bbbe50bd149befeb82c69251"
