@@ -167,8 +167,8 @@ io.on('connection', function (socket) {
 	socket.on('event:nearby', function (data) { // Client requested nearby events
 		readEvents.findNearbyEvents(socket, data);
 	});
-	socket.on('event:detail', function (data, callback) { // Client requested event detail
-		readEvents.getEventDetail(socket, data, callback);
+	socket.on('event:detail', function (data) { // Client requested event detail
+		readEvents.getEventDetail(socket, data);
 	});
 
 	// Server-Client pinging

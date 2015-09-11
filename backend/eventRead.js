@@ -55,7 +55,7 @@ exports.findNearbyEvents = function (socket, data) {
         for (var i=0; i<times.length; i++) {
             if (parseFloat(times[i].start) > parseFloat(timeStamp)) { // Compare EPOCH times
                 doc.time = times[i]
-                SocketBuffer.sendMessage(socket, 'event:nearby', JSON.stringify(doc));
+                SocketBuffer.sendMessage(data.did, socket, 'event:nearby', JSON.stringify(doc));
                 toRemove = false
                 break;
             }
@@ -69,22 +69,22 @@ exports.findNearbyEvents = function (socket, data) {
     });
 
     summStream.on('error', function (err) {
-        SocketBuffer.sendMessage(socket, 'event:nearby:status', 'Error getting event summaries');
+        SocketBuffer.sendMessage(data.did, socket, 'event:nearby:status', 'Error getting event summaries');
     });
 
     summStream.on('close', function () {
-        SocketBuffer.sendMessage(socket, 'event:nearby:status', 'Event Summaries sent');
+        SocketBuffer.sendMessage(data.did, socket, 'event:nearby:status', 'Event Summaries sent');
     });
 
 }
 
 // Event Details
-exports.getEventDetail = function (socket, data, callback) {
+exports.getEventDetail = function (socket, data) {
     // Get event ID from request
     // respond JSON with details
     //   data.eid : Unique event ID
     // Device ID: data.did , unique device id for iOS and Android used in determining sessions
-    // Data is sent back as an acknowledgement using callback() function
+    // Data is sent back using socket with "event:detail" channel
 
     // Check if JSON needs to be parsed
     try {
@@ -92,18 +92,18 @@ exports.getEventDetail = function (socket, data, callback) {
     } catch (e) {}
 
     if (data.did == undefined) { // no unique Device ID specified
-        callback('Error getting event details: no Device ID specified');
+        socket.emit('event:detail:status', 'Error getting event details: no Device ID specified');
         return;
     }
 
     if (data.eid == undefined) { // no EID found
-        callback('Error getting event detail: no eid specified');
+        socket.emit('event:detail:status', 'Error getting event detail: no eid specified');
         return;
     }
 
     Detail.findOne({eid: data.eid}, function(err, detail) {
         if (detail == null) { // Event does not exist in the db
-            callback(JOSN.stringify({error:'Not found on server', eid:data.eid}));
+            SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: Not found on server');
         } else { // Send event details to user
             detail = detail.toObject()
             delete detail._id
@@ -114,7 +114,7 @@ exports.getEventDetail = function (socket, data, callback) {
                 }
                 delete detail.other
             }
-            callback(JSON.stringify(detail));
+            SocketBuffer.sendMessage(data.did, socket, 'event:detail', JSON.stringify(detail));
         }
     });
 
