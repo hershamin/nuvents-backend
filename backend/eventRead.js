@@ -2,6 +2,7 @@
 var Summary = require('../Schema/eventSummary.js')
 var Detail = require('../Schema/eventDetail.js')
 var EventWrite = require('../backend/eventWrite.js')
+var SocketBuffer = require('../backend/socketBuffer.js')
 
 // Nearby Events
 exports.findNearbyEvents = function (socket, data) {
@@ -54,7 +55,7 @@ exports.findNearbyEvents = function (socket, data) {
         for (var i=0; i<times.length; i++) {
             if (parseFloat(times[i].start) > parseFloat(timeStamp)) { // Compare EPOCH times
                 doc.time = times[i]
-                socket.emit('event:nearby', JSON.stringify(doc));
+                SocketBuffer.sendMessage(socket, 'event:nearby', JSON.stringify(doc));
                 toRemove = false
                 break;
             }
@@ -68,11 +69,11 @@ exports.findNearbyEvents = function (socket, data) {
     });
 
     summStream.on('error', function (err) {
-        socket.emit('event:nearby:status', 'Error getting event summaries');
+        SocketBuffer.sendMessage(socket, 'event:nearby:status', 'Error getting event summaries');
     });
 
     summStream.on('close', function () {
-        socket.emit('event:nearby:status', 'Event Summaries sent');
+        SocketBuffer.sendMessage(socket, 'event:nearby:status', 'Event Summaries sent');
     });
 
 }
