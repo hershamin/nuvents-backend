@@ -11,11 +11,12 @@ exports.sendMessage = function (did, socket, event, message) {
 
 	// Add message to DB buffer
 	var buffer = new SocketBuffer({did: did, event: event, message: message});
-	buffer.save();
-
-	// Send via supplied socket object via acknowledgement
-	socket.emit(event, message, function (data) {
-		// Data is received on client end, remove from buffer
-		SocketBuffer.remove({did: did, event: event, message: message});
+	buffer.save(function (err, buff) {
+		// Send via supplied socket object via acknowledgement
+		socket.emit(event, message, function (data) {
+			// Data is received on client end, remove from buffer
+			SocketBuffer.remove({did: did, event: event, message: message});
+		});
 	});
+
 }
