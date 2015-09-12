@@ -160,7 +160,7 @@ io.on('connection', function (socket) {
 
 	// Updating client on resources
 	socket.on('resources', function (data, callback) {
-		deviceInit.sendResources(socket, data, callback);
+		deviceInit.sendResources(socket, data);
 	});
 
 	// Routing event requests from client
