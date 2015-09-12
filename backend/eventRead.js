@@ -106,7 +106,7 @@ exports.getEventDetail = function (socket, data) {
             SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: Not found on server');
         } else { // Send event details to user
             detail = detail.toObject()
-            detail.eid = detail._id
+            detail.eid = data.eid
             delete detail._id
             // Move from non-required fields to main fields
             if (detail.other != undefined) {
@@ -115,7 +115,15 @@ exports.getEventDetail = function (socket, data) {
                 }
                 delete detail.other
             }
-            SocketBuffer.sendMessage(data.did, socket, 'event:detail', JSON.stringify(detail));
+            // Merge summary & event detail
+            Summary.findOne({_id: data.eid}, function(err, summary) {
+                summary = summary.toObject()
+                delete summary._id
+                for (var key in summary) {
+                    detail[key] = summary[key]
+                }
+                SocketBuffer.sendMessage(data.did, socket, 'event:detail', JSON.stringify(detail));
+            });
         }
     });
 
