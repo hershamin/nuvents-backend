@@ -1,5 +1,5 @@
 // Dependencies
-var SocketBuffer = require('../backend/socketBuffer.js');
+var SocketBuffer = require('../Schema/socketBuffer.js');
 
 // Send messages to socket
 exports.sendMessage = function (did, socket, event, message) {
