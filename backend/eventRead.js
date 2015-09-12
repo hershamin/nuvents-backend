@@ -106,6 +106,7 @@ exports.getEventDetail = function (socket, data) {
             SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: Not found on server');
         } else { // Send event details to user
             detail = detail.toObject()
+            detail.eid = detail._id
             delete detail._id
             // Move from non-required fields to main fields
             if (detail.other != undefined) {
