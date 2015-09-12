@@ -5,13 +5,11 @@ var Request = require('../Schema/eventRequest.js')
 
 // Event request to add city
 exports.addEventRequest = function (socket, data) {
-	// Convert raw data string into json
-	var rawStr = data.replace('?','').replace(/\%20/g,' ').split('&')
-	var data = {}
-	for (var i=0; i<rawStr.length; i++) {
-		strSpl = rawStr[i].split('=')
-		data[strSpl[0]] = strSpl[1]
-	}
+	
+	// Check if JSON needs to be parsed
+    try {
+        data = JSON.parse(data);
+    } catch (e) {}
 
     // Typical request
     //  data.city: City Name
