@@ -86,6 +86,8 @@ exports.getEventDetail = function (socket, data) {
     // Device ID: data.did , unique device id for iOS and Android used in determining sessions
     // Data is sent back using socket with "event:detail" channel
 
+    timeS = data.time; // Unique unix time stamp (epoch time in seconds) Represents DEVICE TIMESTAMP
+
     // Check if JSON needs to be parsed
     try {
         data = JSON.parse(data);
@@ -96,7 +98,7 @@ exports.getEventDetail = function (socket, data) {
         return;
     }
 
-    if (data.eid == undefined) { // no EID found
+    if (data.eid == undefined  || isNaN(timeS)) { // no EID found
         socket.emit('event:detail:status', 'Error getting event detail: no eid specified');
         return;
     }
@@ -122,7 +124,24 @@ exports.getEventDetail = function (socket, data) {
                 for (var key in summary) {
                     detail[key] = summary[key]
                 }
-                SocketBuffer.sendMessage(data.did, socket, 'event:detail', JSON.stringify(detail));
+                // Split location into latitude & longitude
+                detail.latitude = detail.location[1]
+                detail.longitude = detail.location[0]
+                delete detail.location
+                // Send nearest future time
+                timeStamp = Math.round(parseFloat(timeS)) // Round timestamp and convert to number
+                var times = detail.time
+                // Sort 'times' array by start time
+                times.sort(function (a,b) {
+                    return parseFloat(a.start) - parseFloat(b.start)
+                })
+                for (var i=0; i<times.length; i++) {
+                    if (parseFloat(times[i].start) > parseFloat(timeStamp)) { // Compare EPOCH times
+                        detail.time = times[i]
+                        SocketBuffer.sendMessage(data.did, socket, 'event:detail', JSON.stringify(detail));
+                        break;
+                    }
+                }
             });
         }
     });
