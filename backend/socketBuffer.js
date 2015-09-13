@@ -20,3 +20,22 @@ exports.sendMessage = function (did, socket, event, message) {
 	});
 
 }
+
+// Retrieve messages & send to socket
+exports.retrieveMessage = function(did, socket) {
+	// Variables
+	//	did: DeviceID
+	//	socket: Socket
+
+	// Get messages from DB buffer
+	SocketBuffer.find({did: did}, 'did event message', function (err, messages) {
+		// Send missed messages
+		for (var i=0; i<messages.length; i++) {
+			var mess = messages[i].toObject()
+			socket.emit(mess.event, mess.message, function (data) {
+				// Data is received on client end, remove from buffer
+				SocketBuffer.remove({did: did, event: mess.event, message: mess.message});
+			});
+		}
+	});
+}
