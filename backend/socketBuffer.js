@@ -15,7 +15,7 @@ exports.sendMessage = function (did, socket, event, message) {
 		// Send via supplied socket object via acknowledgement
 		socket.emit(event, message, function (data) {
 			// Data is received on client end, remove from buffer
-			SocketBuffer.remove({did: did, event: event, message: message});
+			SocketBuffer.remove({did: did, event: event, message: message}, function (err) {});
 		});
 	});
 
@@ -39,7 +39,7 @@ exports.retrieveMessage = function(data, socket) {
 			var mess = messages[i].toObject()
 			socket.emit(mess.event, mess.message, function (data) {
 				// Data is received on client end, remove from buffer
-				SocketBuffer.remove({did: data.did, event: mess.event, message: mess.message});
+				SocketBuffer.remove({did: data.did, event: mess.event, message: mess.message}, function (err) {});
 			});
 		}
 	});
