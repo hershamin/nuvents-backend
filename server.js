@@ -103,6 +103,7 @@ var readEvents = require('./backend/eventRead.js');
 var eventWeb = require('./backend/eventWebsite.js');
 var eventReq = require('./backend/eventRequest.js');
 var eventCity = require('./backend/eventCity.js');
+var socketBuffer = require('./backend/socketBuffer.js');
 var websiteRead = require('./backend/websiteRead.js'); // For website information requests
 var websiteWrite = require('./backend/websiteWrite.js'); // For website writing requests
 var websiteTest = require('./backend/websiteTest.js'); // For website testing requests
@@ -159,8 +160,13 @@ app.get('/cities', eventCity.getExistingCities);
 io.on('connection', function (socket) {
 
 	// Updating client on resources
-	socket.on('resources', function (data, callback) {
+	socket.on('resources', function (data) {
 		deviceInit.sendResources(socket, data);
+	});
+
+	// Retrieve missed messages & send to client on request
+	socket.on('history', function (data) {
+		socketBuffer.retrieveMessage(data, socket);
 	});
 
 	// Routing event requests from client
