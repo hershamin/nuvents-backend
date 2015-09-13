@@ -10,7 +10,9 @@ exports.findNearbyEvents = function (socket, data, callback) {
     // respond JSON with events
 
     // Acknowledge Client
-    callback('Nearby Events Request Received');
+    try {
+        callback('Nearby Event Request Received');
+    } catch (e) {}
 
     // Check if JSON needs to be parsed
     try {
@@ -92,7 +94,9 @@ exports.getEventDetail = function (socket, data, callback) {
     timeS = data.time; // Unique unix time stamp (epoch time in seconds) Represents DEVICE TIMESTAMP
 
     // Acknowledge Client
-    callback('Event Detail Request Received');
+    try {
+        callback('Event Detail Request Received');
+    } catch (e) {}
 
     // Check if JSON needs to be parsed
     try {

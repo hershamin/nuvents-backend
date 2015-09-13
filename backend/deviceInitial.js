@@ -7,7 +7,9 @@ exports.sendResources = function(socket, data, callback) {
 	//	Data is sent back using "resources" or "resources:status" event
 
 	// Acknowledge Client
-	callback('Resources Request Received');
+	try {
+		callback('Resources Request Received');
+	} catch (e) {}
 
 	// Check if JSON needs to be parsed
     try {
