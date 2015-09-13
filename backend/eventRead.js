@@ -5,9 +5,12 @@ var EventWrite = require('../backend/eventWrite.js')
 var SocketBuffer = require('../backend/socketBuffer.js')
 
 // Nearby Events
-exports.findNearbyEvents = function (socket, data) {
+exports.findNearbyEvents = function (socket, data, callback) {
     // Analyze request for lat,lng,rad
     // respond JSON with events
+
+    // Acknowledge Client
+    callback('Nearby Events Request Received');
 
     // Check if JSON needs to be parsed
     try {
@@ -79,7 +82,7 @@ exports.findNearbyEvents = function (socket, data) {
 }
 
 // Event Details
-exports.getEventDetail = function (socket, data) {
+exports.getEventDetail = function (socket, data, callback) {
     // Get event ID from request
     // respond JSON with details
     //   data.eid : Unique event ID
@@ -87,6 +90,9 @@ exports.getEventDetail = function (socket, data) {
     // Data is sent back using socket with "event:detail" channel
 
     timeS = data.time; // Unique unix time stamp (epoch time in seconds) Represents DEVICE TIMESTAMP
+
+    // Acknowledge Client
+    callback('Event Detail Request Received');
 
     // Check if JSON needs to be parsed
     try {

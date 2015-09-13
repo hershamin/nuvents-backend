@@ -160,8 +160,8 @@ app.get('/cities', eventCity.getExistingCities);
 io.on('connection', function (socket) {
 
 	// Updating client on resources
-	socket.on('resources', function (data) {
-		deviceInit.sendResources(socket, data);
+	socket.on('resources', function (data, callback) {
+		deviceInit.sendResources(socket, data, callback);
 	});
 
 	// Retrieve missed messages & send to client on request
@@ -170,11 +170,11 @@ io.on('connection', function (socket) {
 	});
 
 	// Routing event requests from client
-	socket.on('event:nearby', function (data) { // Client requested nearby events
-		readEvents.findNearbyEvents(socket, data);
+	socket.on('event:nearby', function (data, callback) { // Client requested nearby events
+		readEvents.findNearbyEvents(socket, data, callback);
 	});
-	socket.on('event:detail', function (data) { // Client requested event detail
-		readEvents.getEventDetail(socket, data);
+	socket.on('event:detail', function (data, callback) { // Client requested event detail
+		readEvents.getEventDetail(socket, data, callback);
 	});
 
 	// Server-Client pinging

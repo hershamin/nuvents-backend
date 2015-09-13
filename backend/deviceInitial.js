@@ -2,9 +2,12 @@
 var SocketBuffer = require('../backend/socketBuffer.js');
 
 // Send device resources manifest as JSON
-exports.sendResources = function(socket, data) {
+exports.sendResources = function(socket, data, callback) {
 	// Get Device ID (did) and Device Model (dm)
 	//	Data is sent back using "resources" or "resources:status" event
+
+	// Acknowledge Client
+	callback('Resources Request Received');
 
 	// Check if JSON needs to be parsed
     try {
