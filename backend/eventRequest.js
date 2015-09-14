@@ -4,8 +4,13 @@ var Detail = require('../Schema/eventDetail.js')
 var Request = require('../Schema/eventRequest.js')
 
 // Event request to add city
-exports.addEventRequest = function (socket, data) {
+exports.addEventRequest = function (socket, data, callback) {
 	
+    // Acknowledge Client
+    try {
+        callback('Event City Request Received');
+    } catch (e) {}
+
 	// Check if JSON needs to be parsed
     try {
         data = JSON.parse(data);

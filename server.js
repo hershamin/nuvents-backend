@@ -188,8 +188,8 @@ io.on('connection', function (socket) {
 	});
 
 	// Events request to add city
-	socket.on('event:request', function (data) {
-		eventReq.addEventRequest(socket, data);
+	socket.on('event:request', function (data, callback) {
+		eventReq.addEventRequest(socket, data, callback);
 	});
 
 	// Testing website scraper
