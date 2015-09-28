@@ -130,7 +130,7 @@ exports.getEventDetail = function (socket, data, callback) {
             // Merge summary & event detail
             Summary.findOne({_id: data.eid}, function(err, summary) {
                 // Send error message if found
-                if err {
+                if (err) {
                     SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: ' + err);
                     return;
                 }
