@@ -115,7 +115,7 @@ exports.getEventDetail = function (socket, data, callback) {
 
     Detail.findOne({eid: data.eid}, function(err, detail) {
         if (detail == null) { // Event does not exist in the db
-            SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: Not found on server');
+            SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: ' + err);
         } else { // Send event details to user
             detail = detail.toObject()
             detail.eid = data.eid
@@ -158,6 +158,7 @@ exports.getEventDetail = function (socket, data, callback) {
                         break;
                     }
                 }
+                SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Event Detail Sent');
             });
         }
     });
