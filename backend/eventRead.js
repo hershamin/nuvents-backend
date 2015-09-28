@@ -26,12 +26,12 @@ exports.findNearbyEvents = function (socket, data, callback) {
     // Device ID: data.did , unique device id for iOS and Android used in determining sessions
 
     if (data.did == undefined) { // no unique Device ID specified
-        socket.emit('event:nearby:status', 'Error getting event summaries: no Device ID specified');
+        socket.emit('event:nearby:status', 'Error getting event summaries: no Device ID specified'); // Cannot add to buffer, no device ID
         return;
     }
 
     if (latS == undefined ||  lngS == undefined || radS == undefined || isNaN(timeS)) {
-        socket.emit('event:nearby:status', 'Error getting event summaries: no latitude and/or longitude and/or searchRadius specified');
+        SocketBuffer.sendMessage(data.did, socket, 'event:nearby:status', 'Error getting event summaries: no latitude and/or longitude and/or searchRadius specified');
         return;
     }
 
@@ -74,7 +74,7 @@ exports.findNearbyEvents = function (socket, data, callback) {
     });
 
     summStream.on('error', function (err) {
-        SocketBuffer.sendMessage(data.did, socket, 'event:nearby:status', 'Error getting event summaries');
+        SocketBuffer.sendMessage(data.did, socket, 'event:nearby:status', 'Error getting event summaries: ' + err);
     });
 
     summStream.on('close', function () {
@@ -104,12 +104,12 @@ exports.getEventDetail = function (socket, data, callback) {
     } catch (e) {}
 
     if (data.did == undefined) { // no unique Device ID specified
-        socket.emit('event:detail:status', 'Error getting event details: no Device ID specified');
+        socket.emit('event:detail:status', 'Error getting event details: no Device ID specified');// Cannot add to buffer, no device ID
         return;
     }
 
     if (data.eid == undefined  || isNaN(timeS)) { // no EID found
-        socket.emit('event:detail:status', 'Error getting event detail: no eid specified');
+        SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: no eid specified');
         return;
     }
 
@@ -129,6 +129,12 @@ exports.getEventDetail = function (socket, data, callback) {
             }
             // Merge summary & event detail
             Summary.findOne({_id: data.eid}, function(err, summary) {
+                // Send error message if found
+                if err {
+                    SocketBuffer.sendMessage(data.did, socket, 'event:detail:status', 'Error getting event detail: ' + err);
+                    return;
+                }
+                // Rest of process
                 summary = summary.toObject()
                 delete summary._id
                 for (var key in summary) {
